@@ -14,11 +14,11 @@ export default class Config {
         return this.WORLD_SIZE / (this.NAV_GRID_SIZE / this.GRID_SIZE);
     }
 
-    static readonly TIME_SPEED: number = 10;
-    static readonly SUCCESS_CHANCE_MUL: number = 2;
+    static readonly TIME_SPEED: number = 1;
+    static readonly SUCCESS_CHANCE_MUL: number = 1;
 
-    static readonly STARTER_HUMANS_COUNT: number = 1;
-    static readonly HUMAN_STUDY_SECS_DURATION: number = 10;
+    static readonly STARTER_HUMANS_COUNT: number = 4;
+    static readonly HUMAN_STUDY_SECS_DURATION: number = 30;
     static readonly HUMAN_EAT_DURATION: number = 180;
     static readonly TAKE_TASK_SECS_DELAY: number = .5;
 

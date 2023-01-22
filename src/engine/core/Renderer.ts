@@ -1,6 +1,13 @@
 import Config from "../../utils/Config";
 import { Assets } from "./Assets";
 
+import whiteFont_png from "../../assets/images/gui/white-font.png";
+import darkBrownFont_png from "../../assets/images/gui/dark-brown-font.png";
+import blackFont_png from "../../assets/images/gui/black-font.png";
+import redFont_png from "../../assets/images/gui/red-font.png";
+import greenFont_png from "../../assets/images/gui/green-font.png";
+import grayFont_png from "../../assets/images/gui/gray-font.png";
+
 export type FontColor = "white" | "dark-brown" | "black" | "red" | "gray" | "green";
 export type TextAlign = "center" | "right" | "left";
 interface IFontSettings {
@@ -169,12 +176,12 @@ export class Renderer {
         document.body.appendChild(this.canvas);
 
         //
-        Assets.loadImage("white-font", "src/assets/images/gui/white-font.png")
-        Assets.loadImage("dark-brown-font", "src/assets/images/gui/dark-brown-font.png")
-        Assets.loadImage("black-font", "src/assets/images/gui/black-font.png")
-        Assets.loadImage("gray-font", "src/assets/images/gui/gray-font.png")
-        Assets.loadImage("red-font", "src/assets/images/gui/red-font.png")
-        Assets.loadImage("green-font", "src/assets/images/gui/green-font.png")
+        Assets.loadImage("white-font", whiteFont_png)
+        Assets.loadImage("dark-brown-font", darkBrownFont_png)
+        Assets.loadImage("black-font", blackFont_png)
+        Assets.loadImage("gray-font", grayFont_png)
+        Assets.loadImage("red-font", redFont_png)
+        Assets.loadImage("green-font", greenFont_png)
     }
 
     // Get
