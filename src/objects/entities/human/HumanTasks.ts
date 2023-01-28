@@ -36,34 +36,25 @@ export default class HumanTasks {
             else if (aPriority < bPriority)
                 return -1;
                 
-            if (a.time > b.time)
-                return 1;
-                
-            return 0;
+            return a.time - b.time;
         }).reverse();
     }
 
-    changeCurrentTask(): SampleHumanTask | null {
+    changeCurrentTask(): { newTask: SampleHumanTask | null, lastTask: SampleHumanTask | null } {
         const lastTask = this.current;
         const newTask = this.getSortedTasks()[0] || null;
-
-        this.current = newTask;
 
         if (lastTask != newTask) {
             if (lastTask) {
                 lastTask.onDeferred(this.human);
             }
-        }
-        
-        if (newTask) {
-            if (newTask) {
-                this.human.onTakeTask(newTask);
-                newTask.onTake(this.human);
-            }
 
+            this.takeTask(newTask)
         }
         
-        return newTask;
+        return {
+            newTask, lastTask
+        };
     }
     
     //
@@ -71,11 +62,17 @@ export default class HumanTasks {
         this.queue.push(task);
 
         task.onAdded(this.human);
-        this.changeCurrentTask();
-
         this.human.onTaskAdded(task);
+        
+        console.log(this.changeCurrentTask());
 
         return task;
+    }
+    takeTask(task: SampleHumanTask) {
+        this.current = task;
+        
+        task.onTake(this.human);
+        this.human.onTakeTask(task);
     }
     cancelTask(task: SampleHumanTask): SampleHumanTask | null {
         const removedTask = Utils.removeItem(this.queue, task);
@@ -83,8 +80,8 @@ export default class HumanTasks {
 
         removedTask.onCancel(this.human);
         Orders.cancelOrder(removedTask.targetOrder);
-        this.changeCurrentTask();
-
+        console.log(this.changeCurrentTask());
+        
         this.human.onTaskCancel(removedTask);
 
         return removedTask
@@ -95,8 +92,8 @@ export default class HumanTasks {
 
         removedTask.onDone(this.human);
         Orders.doneOrder(removedTask.targetOrder, success);
-        this.changeCurrentTask();
-
+        console.log(this.changeCurrentTask());
+        
         this.human.onTaskDone(removedTask, success);
 
         return removedTask

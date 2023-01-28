@@ -8,6 +8,7 @@ export default class RestTask extends SampleHumanTask {
 
         this.hasDelay = true;
         this.cancelOnFail = true;
+        this.cancelOnDeffer = true;
         this.targetCell = human.getHouse();
         this.targetPos = Objects.campfire.getRandomPos(10);
     }
@@ -24,10 +25,8 @@ export default class RestTask extends SampleHumanTask {
     }
     executing(human: Human): void {
         super.executing(human);
-
-        const stamina = human.stamina;
         
-        if (stamina && stamina.value >= stamina.maxValue) {
+        if (human.stamina.full) {
             human.tasks.doneTask(this, true);
         }
     }

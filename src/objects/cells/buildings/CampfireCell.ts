@@ -33,20 +33,6 @@ export default class CampfireCell extends Cell {
         }
 
     }
-    update(): void {
-        super.update();
-
-        // if (this.time % 10 == 0) {
-        //     const pos = this.getCenter();
-            
-        //     Particles.addParticles(
-        //         ()=> new FireParticle(),
-        //         ()=> pos.x,
-        //         ()=> pos.y,
-        //         1
-        //     );
-        // }
-    }
 
     //
     getOrdersMenuTab(menu: OrdersMenu): IMenuButton[] {
@@ -148,7 +134,6 @@ export default class CampfireCell extends Cell {
                 {
                     text: `больше (${ PlayerHelpers.showAdvancedStats ? "вкл" : "выкл" })`,
                     tooltip: `больше данных (${ PlayerHelpers.showAdvancedStats ? "вкл" : "выкл" })`,
-                    blur: true,
                     onClick: ()=> PlayerHelpers.showAdvancedStats = !PlayerHelpers.showAdvancedStats,
                 },
             ],

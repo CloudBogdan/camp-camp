@@ -3,7 +3,7 @@ import Config from "./utils/Config";
 import Palette from "./utils/Palette";
 
 import GameGui from "./gui/game/GameGui";
-import NavGrid from "./managers/Nav";
+import NavGrid from "./managers/NavGrid";
 import Screen from "./managers/Screen";
 import World from "./managers/World";
 
@@ -13,6 +13,7 @@ export default class Game {
     static start() {
         World.start();
         GameGui.start();
+        NavGrid.start();
     }
     static update() {
         if (Keyboard.justKey("H") && Config.IS_DEV)
@@ -26,14 +27,7 @@ export default class Game {
         Renderer.background(Palette.BLACK);
         
         World.draw();
-
-        if (Engine.isDebug)
-            for (let y = 0; y < Config.WORLD_NAV_SIZE; y ++) {
-                for (let x = 0; x < Config.WORLD_NAV_SIZE; x ++) {
-                    if (!NavGrid.navGrid.isWalkableAt(x, y))
-                        Renderer.rect(x * Config.NAV_GRID_SIZE, y * Config.NAV_GRID_SIZE, Config.NAV_GRID_SIZE, Config.NAV_GRID_SIZE, "#f00")
-                }
-            }
+        NavGrid.draw()
         
         GameGui.draw();
     }

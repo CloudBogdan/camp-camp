@@ -1,5 +1,5 @@
 import * as PF from "pathfinding";
-import NavGrid from "../managers/Nav";
+import NavGrid from "../managers/NavGrid";
 import Config from "./Config";
 import { IArrayPoint } from "./types";
 import Utils from "./Utils";

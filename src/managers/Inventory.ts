@@ -1,3 +1,5 @@
+import Config from "../utils/Config"
+
 export interface IItemsStack {
     [key: string]: number
 }
@@ -9,13 +11,14 @@ export interface ICost {
 }
 
 export default class Inventory {
-    static items: IItemsStack = {
-        // "food": 50,
-        // "wood": 0,
-        // "stone": 0,
+    static items: IItemsStack = Config.IS_DEV ? {
         "food": 200,
         "wood": 200,
         "stone": 200,
+    } : {
+        "food": 50,
+        "wood": 0,
+        "stone": 0,
     }
 
     //

@@ -25,6 +25,10 @@ export default class WalkTask extends SampleHumanTask {
             if (Random.bool(.4))
                 human.walkAround();
         }
+
+        if (Engine.time % 60 == 0) {
+            human.tryTakeOrder()
+        }
     }
 
     destroy(human: Human): void {

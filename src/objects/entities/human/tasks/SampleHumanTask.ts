@@ -40,8 +40,6 @@ export default class SampleHumanTask {
 
     }
     onTake(human: Human) {
-        console.log("Take task:", HumanTaskType[this.type]);
-
         const targetCell = this.targetCell || this.targetOrder?.targetCell;
         
         if (targetCell)
@@ -50,8 +48,6 @@ export default class SampleHumanTask {
             human.moveTo(this.targetPos.x, this.targetPos.y);
     }
     startExecute(human: Human) {
-        console.log("Start executing task", HumanTaskType[this.type]);
-        
         this.active = true;
     }
     executing(human: Human) {
@@ -92,11 +88,9 @@ export default class SampleHumanTask {
         } else
             this.executing(human);
 
-        if (targetCell) {
-            if (targetCell.destroyed) {
-                human.tasks.cancelTask(this);
-            }
-        } 
+        if (targetCell && targetCell.destroyed) {
+            human.tasks.cancelTask(this);
+        }
     }
     destroy(human: Human) {
         this.active = false;

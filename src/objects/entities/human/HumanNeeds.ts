@@ -24,6 +24,11 @@ export default class HumanNeeds {
             need.update(this.human);
         }
     }
+    destroy() {
+        for (const need of Object.values(this.map)) {
+            need.destroy(this.human);
+        }
+    }
     
     //
     onTakeOrder(order: Order) {

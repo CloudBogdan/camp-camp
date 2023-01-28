@@ -6,8 +6,8 @@ import Config from "../utils/Config";
 
 import Game from "../Game";
 import MenuButtonSelector from "./MenuButtonSelector";
-import GameGui from "../gui/game/GameGui";
 import PlayerHelpers from "../managers/PlayerHelpers";
+import Utils from "../utils/Utils";
 
 export interface IMenuButton {
     text: string
@@ -77,6 +77,7 @@ export default class Menu {
         this.isFocused = false;
         this.curTabName = this.homeTabName;
         this.cost = {};
+        this.history = [this.homeTabName];
 
         this.onScroll(this.getCurTabButtons()[0], this.x, this.y);
     }
@@ -131,8 +132,15 @@ export default class Menu {
             if (!button || (button.visible && !button.visible()) || (button.disabled && button.disabled())) return; 
 
             button.onClick && button.onClick();
-            button.blur && this.blur();
-            button.tab && this.openTab(button.tab);
+
+            if (button.blur) {
+                this.blur();
+                button.onOut && button.onOut();
+            }
+            if (button.tab) {
+                this.openTab(button.tab);
+                button.onOut && button.onOut();
+            }
             
             Keyboard.justPressed = false;
         }
@@ -142,8 +150,6 @@ export default class Menu {
     }
     draw() {
         const curTabButtons = this.getCurTabButtons();
-
-        // this.buttonSelector.draw();
         
         for (let i = 0; i < curTabButtons.length; i ++) {
             const button = curTabButtons[i];
@@ -202,10 +208,10 @@ export default class Menu {
                 text: "назад",
                 onClick: ()=> {
                     const lastTab = this.history[this.history.length-2];
-                    console.log(lastTab, this.history);
+                    
                     if (lastTab) {
+                        Utils.removeItem(this.history, this.curTabName);
                         this.openTab(lastTab);
-                        this.history.splice(this.history.length-1, 1);
                     } else
                         this.blur();
                 }

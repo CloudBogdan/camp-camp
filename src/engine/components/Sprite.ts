@@ -17,6 +17,7 @@ class SpriteAnimation {
     frames: number[] = [0];
     looped: boolean = true;
     finished: boolean = false;
+    reversed: boolean = false;
     private lastFrameIndex: number = 0;
     private _frameIndex: number = 0;
 
@@ -24,12 +25,21 @@ class SpriteAnimation {
 
     update(time: number) {
         if (!this.paused && time % this.speed == 0) {
-            this.frameIndex ++;
+            if (!this.reversed) {
+                this.frameIndex ++;
 
-            if (this.frameIndex >= this.frames.length && this.looped)
-                this.frameIndex = 0;
-            if (this.frameIndex > this.frames.length && !this.looped)
-                this.finished = true;
+                if (this.frameIndex >= this.frames.length && this.looped)
+                    this.frameIndex = 0;
+                if (this.frameIndex > this.frames.length && !this.looped)
+                    this.finished = true;
+            } else {
+                this.frameIndex --;
+
+                if (this.frameIndex < 0 && this.looped)
+                    this.frameIndex = this.frames.length-1;
+                if (this.frameIndex <= 0 && !this.looped)
+                    this.finished = true;
+            }
         }
     }
     

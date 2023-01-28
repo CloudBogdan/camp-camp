@@ -1,12 +1,13 @@
 import { Engine, FontColor, Renderer } from "../engine";
 import { Assets } from "../engine/core/Assets";
+import Config from "../utils/Config";
 import Orders, { OrderType } from "./Orders";
 
 export default class PlayerHelpers {
     static highlightHumans: boolean = false;
     static highlightOrders: boolean = false;
     static highlightStatName: string | null = null;
-    static showAdvancedStats: boolean = false;
+    static showAdvancedStats: boolean = Config.IS_DEV ? true : false;
     
     static tooltipText: string = "";
     static tooltipColor: FontColor = "gray";

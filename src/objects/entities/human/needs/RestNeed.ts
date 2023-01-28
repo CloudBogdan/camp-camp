@@ -1,15 +1,21 @@
+import { Engine } from "../../../../engine";
 import { Order } from "../../../../managers/Orders";
 import Human from "../Human";
 import SampleHumanNeed from "./SampleHumanNeed";
 
 export default class RestNeed extends SampleHumanNeed {
+    cooldownTimer = Engine.createTimer(120);
+    
     constructor() {
         super(100);
     }
 
     update(human: Human): void {
         if (!human.getIsBusy()) {
-            this.value += 1 / 30;
+            if (this.cooldownTimer.finished)
+                this.value += 1 / 20;
+        } else {
+            this.cooldownTimer.start();
         }
     }
     

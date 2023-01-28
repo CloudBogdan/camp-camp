@@ -1,10 +1,14 @@
+import { Engine } from "../../../../engine";
 import Inventory from "../../../../managers/Inventory";
 import { Order } from "../../../../managers/Orders";
+import Human from "../Human";
 import EatTask from "../tasks/EatTask";
 import { HumanTaskType } from "../tasks/SampleHumanTask";
 import SampleHumanNeed from "./SampleHumanNeed";
 
 export default class SaturationNeed extends SampleHumanNeed {
+    eatTaskCooldownTimer = Engine.createTimer(1200) // ~20 secs
+    
     constructor() {
         super(100);
     }
@@ -14,14 +18,17 @@ export default class SaturationNeed extends SampleHumanNeed {
 
         this.value -= 1 / 180;
 
-        if (human.getTaskType() != HumanTaskType.EAT) {
+        if (!human.hasTasks([HumanTaskType.EAT]) && this.eatTaskCooldownTimer.finished) {
             if (this.value <= this.maxValue/2) {
                 if (Inventory.food > 0) {
                     const task = new EatTask(human);
                     human.tasks.addTask(task);
+                    console.log("ADDED EAT TASK from saturation need");
                 } else {
                     human.emotion.set("food");
                 }
+
+                this.eatTaskCooldownTimer.start();
             }
         }
     }
@@ -37,5 +44,12 @@ export default class SaturationNeed extends SampleHumanNeed {
     }
     onHumanOrderCancel(human: Human, order: Order): void {
         this.orderDone(human, order);
+    }
+
+    //
+    destroy(human: Human): void {
+        super.destroy(human);
+
+        Engine.destroyTimer(this.eatTaskCooldownTimer);
     }
 }

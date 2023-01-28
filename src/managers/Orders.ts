@@ -35,16 +35,16 @@ export class Order {
         this.category = category;
     }
 
-    added() {
+    onAdd() {
         this.targetCell.onOrderAdded(this);
     }
-    start(executor: Human) {
+    onTake(executor: Human) {
         
     }
-    done() {
+    onDone() {
 
     }
-    cancel() {
+    onCancel() {
 
     }
     
@@ -88,7 +88,7 @@ export default class Orders {
         }).filter(Boolean);
         
         if (successPaths.length > 0) {
-            order.added();
+            order.onAdd();
 
             Particles.addParticles(()=> new OrderParticle(), ()=> order.targetCell.x, ()=> order.targetCell.y);
             
@@ -123,7 +123,7 @@ export default class Orders {
         if (!order) return null;
 
         order.executor = human;
-        order.start(human);
+        order.onTake(human);
         
         human.onTakeOrder(order);
         order.targetCell.onTakeOrder(order);
@@ -135,7 +135,7 @@ export default class Orders {
         const removedOrder = Utils.removeItem(this.orders, order);
         if (!removedOrder) return null;
 
-        removedOrder.done();
+        removedOrder.onDone();
         
         removedOrder.targetCell.onOrderDone(removedOrder, success);
         removedOrder.executor && removedOrder.executor.onOrderDone(removedOrder, success);
@@ -147,7 +147,12 @@ export default class Orders {
         const removedOrder = Utils.removeItem(this.orders, order);
         if (!removedOrder) return null;
 
-        removedOrder.cancel();
+        removedOrder.onCancel();
+
+        const orderParticle = new OrderParticle();
+        orderParticle.animation.reversed = true;
+        orderParticle.animation.frameIndex = orderParticle.animation.frames.length-1;
+        Particles.addParticles(()=> orderParticle, ()=> removedOrder.targetCell.x, ()=> removedOrder.targetCell.y);
 
         removedOrder.targetCell.onOrderCancel(removedOrder);
         removedOrder.executor && removedOrder.executor.onOrderCancel(removedOrder);

@@ -12,6 +12,7 @@ export default class SampleHumanNeed {
     }
 
     update(human: Human) {}
+    destroy(human: Human) {}
 
     onHumanTakeOrder(human: Human, order: Order) {}
     onHumanOrderCancel(human: Human, order: Order) {}
@@ -38,5 +39,8 @@ export default class SampleHumanNeed {
     }
     get level(): number {
         return this.value / this.maxValue;
+    }
+    get full(): boolean {
+        return this.value >= this.maxValue;
     }
 }

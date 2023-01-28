@@ -11,6 +11,7 @@ export default class EatTask extends SampleHumanTask {
 
         this.hasDelay = true;
         this.cancelOnFail = true;
+        this.cancelOnDeffer = true;
         this.canTakeOrders = false;
         this.targetCell = human.getHouse();
         this.targetPos = Objects.campfire.getRandomPos(10);

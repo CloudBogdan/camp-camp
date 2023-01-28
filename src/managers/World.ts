@@ -2,7 +2,7 @@ import { Random, Renderer } from "../engine";
 import Config from "../utils/Config";
 import Palette from "../utils/Palette";
 
-import NavGrid from "./Nav";
+import NavGrid from "./NavGrid";
 import Cells from "./Cells";
 import Humans from "./humans/Humans";
 import CampfireCell from "../objects/cells/buildings/CampfireCell";
