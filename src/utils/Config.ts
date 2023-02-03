@@ -1,5 +1,5 @@
 export default class Config {
-    static readonly IS_DEV: boolean = !import.meta.env.DEV;
+    static readonly IS_DEV: boolean = import.meta.env.DEV;
 
     static readonly CANVAS_WIDTH: number = 208;
     static readonly CANVAS_HEIGHT: number = 136;
@@ -17,7 +17,7 @@ export default class Config {
     static readonly TIME_SPEED: number = this.IS_DEV ? (10) : (1);
     static readonly SUCCESS_CHANCE_MUL: number = this.IS_DEV ? (2) : (1);
 
-    static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (1) : (4);
+    static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (4) : (4);
     static readonly HUMAN_STUDY_SECS_DURATION: number = this.IS_DEV ? (10) : (30);
     static readonly HUMAN_EAT_DURATION: number = 180;
     static readonly TAKE_TASK_SECS_DELAY: number = .5;

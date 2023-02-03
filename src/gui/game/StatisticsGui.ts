@@ -82,6 +82,12 @@ export default class StatisticsGui {
             debug: true,
             value: ()=> Utils.percent(Humans.restLevel)
         },
+        {
+            name: "social",
+            iconName: "happiness-icon",
+            debug: true,
+            value: ()=> Utils.percent(Humans.humans[0].social.level)
+        },
     ]
     
     constructor(parent: typeof GameGui) {

@@ -16,14 +16,13 @@ export default class SaturationNeed extends SampleHumanNeed {
     update(human: Human): void {
         super.update(human);
 
-        this.value -= 1 / 180;
+        this.value -= .1 / 20;
 
         if (!human.hasTasks([HumanTaskType.EAT]) && this.eatTaskCooldownTimer.finished) {
             if (this.value <= this.maxValue/2) {
                 if (Inventory.food > 0) {
                     const task = new EatTask(human);
                     human.tasks.addTask(task);
-                    console.log("ADDED EAT TASK from saturation need");
                 } else {
                     human.emotion.set("food");
                 }

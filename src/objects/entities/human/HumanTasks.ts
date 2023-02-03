@@ -90,7 +90,7 @@ export default class HumanTasks {
         const removedTask = Utils.removeItem(this.queue, task);
         if (!removedTask) return null;
 
-        removedTask.onDone(this.human);
+        removedTask.onDone(this.human, success);
         Orders.doneOrder(removedTask.targetOrder, success);
         console.log(this.changeCurrentTask());
         

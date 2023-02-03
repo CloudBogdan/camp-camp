@@ -7,7 +7,7 @@ export default class HumanProfessions {
     human: Human
 
     learningTimeout: number = -1;
-    learning: boolean = false;
+    isLearning: boolean = false;
     current: HumanProfession = new NoneProfession();
 
     onChanged = new Trigger<HumanProfession>("human-professions/on-changed");
@@ -24,11 +24,11 @@ export default class HumanProfessions {
         this.onChanged.notify(profession);
     }
     learn(profession: HumanProfession): Promise<HumanProfession> {
-        this.learning = true;
+        this.isLearning = true;
         
         return new Promise((resolve, reject)=> {
             this.learningTimeout = setTimeout(()=> {
-                this.learning = false;
+                this.isLearning = false;
                 this.set(profession);
                 
                 resolve(this.current);
@@ -36,7 +36,7 @@ export default class HumanProfessions {
         });
     }
     stopLearning() {
-        this.learning = false;
+        this.isLearning = false;
         clearTimeout(this.learningTimeout);
     }
 

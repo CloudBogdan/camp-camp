@@ -75,10 +75,10 @@ export default class Humans {
         this.restLevel = 0;
         
         for (const human of this.humans) {
-            this.happinessLevel += human.happiness.value / human.happiness.maxValue;
-            this.saturationLevel += human.saturation.value / human.saturation.maxValue;
-            this.staminaLevel += human.stamina.value / human.stamina.maxValue;
-            this.restLevel += human.rest.value / human.rest.maxValue;
+            this.happinessLevel += human.happiness.level;
+            this.saturationLevel += human.saturation.level;
+            this.staminaLevel += human.stamina.level;
+            this.restLevel += human.rest.level;
         }
         
         this.happinessLevel /= this.count;

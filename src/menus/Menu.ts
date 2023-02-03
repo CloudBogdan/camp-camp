@@ -5,7 +5,6 @@ import Palette from "../utils/Palette";
 import Config from "../utils/Config";
 
 import Game from "../Game";
-import MenuButtonSelector from "./MenuButtonSelector";
 import PlayerHelpers from "../managers/PlayerHelpers";
 import Utils from "../utils/Utils";
 
@@ -44,7 +43,6 @@ export default class Menu {
     curButtonIndex: number = 0;
     cost: ICost = {};
 
-    buttonSelector = new MenuButtonSelector();
     nextTabIconImage = Assets.getImage("next-tab-icon");
     sizeAnimTimer = Engine.createTimer(4);
 
@@ -56,7 +54,7 @@ export default class Menu {
     }
     
     onScroll(currentButton: IMenuButton, buttonX: number, buttonY: number) {
-        this.buttonSelector.animateTo(buttonX, buttonY);
+        
     }
     
     //
@@ -69,11 +67,13 @@ export default class Menu {
     }
     blur() {
         const button = this.getCurTabButtons()[this.curButtonIndex];
-        button.onOut && button.onOut();
+        if (button && button.onOut)
+            button.onOut();
         
         if (Game.focusedMenu == this)
             Game.focusedMenu = null;
             
+        this.curButtonIndex = 0;
         this.isFocused = false;
         this.curTabName = this.homeTabName;
         this.cost = {};
@@ -82,6 +82,10 @@ export default class Menu {
         this.onScroll(this.getCurTabButtons()[0], this.x, this.y);
     }
     openTab(name: string) {
+        const button = this.getCurTabButtons()[this.curButtonIndex];
+        if (button && button.onOut)
+            button.onOut();
+        
         this.curButtonIndex = 0;
         this.curTabName = name;
 
@@ -135,14 +139,12 @@ export default class Menu {
 
             if (button.blur) {
                 this.blur();
-                button.onOut && button.onOut();
             }
             if (button.tab) {
                 this.openTab(button.tab);
-                button.onOut && button.onOut();
             }
             
-            Keyboard.justPressed = false;
+            Keyboard.reset()
         }
         if (Keyboard.justButton("esc")) {
             this.blur();

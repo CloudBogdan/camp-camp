@@ -10,6 +10,11 @@ import Config from "../../../utils/Config";
 import { IPoint } from "../../../utils/types";
 import Utils from "../../../utils/Utils";
 import Human from "../../entities/human/Human";
+import ArchitectProfession from "../../entities/human/professions/ArchitectProfession";
+import BuilderProfession from "../../entities/human/professions/BuilderProfession";
+import GardenerProfession from "../../entities/human/professions/GardenerProfession";
+import MinerProfession from "../../entities/human/professions/MinerProfession";
+import NoneProfession from "../../entities/human/professions/NoneProfession";
 import Cell from "../Cell";
 
 export default class CampfireCell extends Cell {
@@ -41,6 +46,7 @@ export default class CampfireCell extends Cell {
                 text: `жители (${ Humans.count })`,
                 sprite: "human-icon",
                 spriteMargin: -2,
+                tab: "campfire/humans",
                 onEnter: ()=> {
                     PlayerHelpers.highlightHumans = true;
                     PlayerHelpers.highlightStatName = "humans";
@@ -145,6 +151,23 @@ export default class CampfireCell extends Cell {
                     onEnter: ()=> PlayerHelpers.highlightOrders = true,
                     onOut: ()=> PlayerHelpers.highlightOrders = false,
                     blur: true
+                },
+            ],
+            "campfire/humans": [
+                {
+                    text: `без работы (${ Humans.humans.filter(h=> h.professions.is(NoneProfession)).length })`
+                },
+                {
+                    text: `садовод (${ Humans.humans.filter(h=> h.professions.is(GardenerProfession)).length })`
+                },
+                {
+                    text: `строитель (${ Humans.humans.filter(h=> h.professions.is(BuilderProfession)).length })`
+                },
+                {
+                    text: `архитектор (${ Humans.humans.filter(h=> h.professions.is(ArchitectProfession)).length })`
+                },
+                {
+                    text: `шахтер (${ Humans.humans.filter(h=> h.professions.is(MinerProfession)).length })`
                 },
             ]
         }

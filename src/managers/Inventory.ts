@@ -12,7 +12,7 @@ export interface ICost {
 
 export default class Inventory {
     static items: IItemsStack = Config.IS_DEV ? {
-        "food": 200,
+        "food": 20,
         "wood": 200,
         "stone": 200,
     } : {

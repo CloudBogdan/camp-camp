@@ -62,6 +62,11 @@ export class Keyboard {
     }
     
     //
+    static reset() {
+        this.justPressed = false;
+        this.isPressed = false;
+        this.pressedKeys = {};
+    }
     static updateJust() {
         this.justPressed = false;
     }

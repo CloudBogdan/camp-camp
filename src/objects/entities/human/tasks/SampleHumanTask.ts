@@ -9,7 +9,8 @@ export enum HumanTaskType {
     REST,
     EAT,
     LEARN_PROFESSION,
-    WALK
+    WALK,
+    COMMUNICATE
 }
 
 export default class SampleHumanTask {
@@ -62,7 +63,7 @@ export default class SampleHumanTask {
                 human.tasks.cancelTask(this);
         }
     }
-    onDone(human: Human) {
+    onDone(human: Human, success: boolean) {
         this.destroy(human);
     }
     onCancel(human: Human) {

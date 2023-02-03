@@ -72,6 +72,9 @@ export default class ImprovableCell extends Cell {
         ]
     }
     getCanBeUpgraded(): boolean {
-        return this.level < this.maxLevels-1 && this.getOrderType() != OrderType.UPGRADE;
+        return !this.getIsMaxLevel() && this.getOrderType() != OrderType.UPGRADE;
+    }
+    getIsMaxLevel(): boolean {
+        return this.level >= this.maxLevels-1
     }
 }

@@ -2,6 +2,7 @@ import Humans from "../../../../managers/humans/Humans";
 import Inventory from "../../../../managers/Inventory";
 import Objects from "../../../../managers/Objects";
 import Config from "../../../../utils/Config";
+import Utils from "../../../../utils/Utils";
 import Human from "../Human";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";
 
@@ -21,8 +22,6 @@ export default class EatTask extends SampleHumanTask {
         super.onTake(human);
     }
 
-        
-    // }
     executing(human: Human): void {
         super.executing(human);
 
@@ -32,20 +31,26 @@ export default class EatTask extends SampleHumanTask {
             this.eat(human);
         }
     }
+    onDone(human: Human, success: boolean): void {
+        super.onDone(human, success);
+
+        if (!success)
+            human.emotion.set("food");
+    }
 
     eat(human: Human) {
         const saturation = human.saturation;
 
         const totalFood = Inventory.items["food"];
         let needToEat = saturation.maxValue - saturation.value;
-        
-        if (needToEat > totalFood * Config.FOOD_SATURATION) {
-            needToEat /= (Humans.count+1);
-        }
 
-        saturation.value += needToEat * Config.FOOD_SATURATION;
+        needToEat = Utils.clamp(needToEat, 1, totalFood);
+
         const result = Inventory.remove({ "food": needToEat/Config.FOOD_SATURATION });
-
-        human.tasks.doneTask(this, true);
+        if (result) {
+            saturation.value += needToEat * Config.FOOD_SATURATION;
+        }
+        
+        human.tasks.doneTask(this, result);
     }
 }

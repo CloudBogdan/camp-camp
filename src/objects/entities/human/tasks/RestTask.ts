@@ -26,13 +26,13 @@ export default class RestTask extends SampleHumanTask {
     executing(human: Human): void {
         super.executing(human);
         
-        if (human.stamina.full) {
+        if (human.stamina.isFull) {
             human.tasks.doneTask(this, true);
         }
     }
 
-    onDone(human: Human): void {
-        super.onDone(human);
+    onDone(human: Human, success: boolean): void {
+        super.onDone(human, success);
         human.state.set(HumanState.NORMAL);
     }
     onCancel(human: Human): void {

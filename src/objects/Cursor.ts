@@ -66,7 +66,7 @@ export default class Cursor extends Sprite {
 
             if (Keyboard.justButton("enter")) {
                 GameGui.ordersMenu.focus();
-                Keyboard.justPressed = false;
+                Keyboard.reset()
                 this.animateScale(8);
             }
         }

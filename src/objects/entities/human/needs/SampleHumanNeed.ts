@@ -40,7 +40,7 @@ export default class SampleHumanNeed {
     get level(): number {
         return this.value / this.maxValue;
     }
-    get full(): boolean {
+    get isFull(): boolean {
         return this.value >= this.maxValue;
     }
 }

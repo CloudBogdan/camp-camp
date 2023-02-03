@@ -48,7 +48,7 @@ export default class ProfessionCell extends DwellingCell {
 
     //
     getIsLearning(): boolean {
-        return this.humans[0] ? this.humans[0].professions.learning : false;
+        return this.humans[0] ? this.humans[0].professions.isLearning : false;
     }
     getOrdersMenuTab(menu: OrdersMenu): IMenuButton[] {
         return [

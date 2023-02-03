@@ -11,13 +11,17 @@ export default class HappinessNeed extends SampleHumanNeed {
         super.update(human);
 
         if (human.rest.level < .5) {
-            this.value -= 1 / 240;
+            this.value -= 1 / 200;
         } else if (human.rest.level > .9) {
             this.value += 1 / 300;
         }
 
         if (human.saturation.level < .3) {
-            this.value -= 1 / 180;
+            this.value -= 1 / 60;
+        }
+
+        if (human.social.level < .4) {
+            this.value -= 1 / 300;
         }
     }
 

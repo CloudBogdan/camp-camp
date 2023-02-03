@@ -22,6 +22,7 @@ import WalkTask from "./tasks/WalkTask";
 import RestNeed from "./needs/RestNeed";
 import Objects from "../../../managers/Objects";
 import SampleHumanTask, { HumanTaskType } from "./tasks/SampleHumanTask";
+import SocialNeed from "./needs/SocialNeed";
 
 export enum HumanState {
     NORMAL,
@@ -37,10 +38,12 @@ export default class Human extends Entity {
     saturation = new SaturationNeed();
     stamina = new StaminaNeed();
     rest = new RestNeed();
+    social = new SocialNeed();
     isTired: boolean = false;
 
     dwellingCell: DwellingCell | null = null;
 
+    color = Palette.WHITE;
     state = new State<HumanState>(HumanState.NORMAL);
     emotion = new EmotionCloud(this);
     
@@ -53,6 +56,7 @@ export default class Human extends Entity {
         this.needs.addNeed("happiness", this.happiness);
         this.needs.addNeed("saturation", this.saturation);
         this.needs.addNeed("stamina", this.stamina);
+        this.needs.addNeed("social", this.social);
         this.needs.addNeed("rest", this.rest);
     }
 
@@ -100,7 +104,7 @@ export default class Human extends Entity {
     draw(): void {
         if (!this.visible || !this.active) return;
         
-        let color = this.professions.current.color || Palette.WHITE;
+        let color = this.professions.current.color || this.color;
         
         Renderer.rect(
             Math.floor(this.x),
@@ -268,7 +272,7 @@ export default class Human extends Entity {
         return this.tasks.current ? this.tasks.current.priority : -1;
     }
     getCanTakeOrders(): boolean {
-        return !this.professions.learning && !this.isTired && (this.tasks.current ? this.tasks.current.getCanTakeOrders(this) : true);
+        return !this.professions.isLearning && !this.isTired && (this.tasks.current ? this.tasks.current.getCanTakeOrders(this) : true);
     }
     getCurOrder(): Order | null {
         const curTask = this.tasks.current;

@@ -7,7 +7,7 @@ import Utils from "../../utils/Utils";
 import Cell from "../cells/Cell";
 
 export default class Entity extends Sprite {
-    moveSpeed: number = .2;
+    moveSpeed: number = 8;
     active: boolean = true;
     
     isMoving: boolean = false;
@@ -21,8 +21,8 @@ export default class Entity extends Sprite {
     constructor(name: string, width?: number, height?: number) {
         super(name, width, height);
 
-        this.velocityMultiplier.x = .8;
-        this.velocityMultiplier.y = .8;
+        this.velocityMultiplier.x = .1;
+        this.velocityMultiplier.y = .1;
     }
     
     update() {
@@ -56,7 +56,7 @@ export default class Entity extends Sprite {
             pointY - this.y
         );
 
-        if (Utils.distance(this.x, this.y, pointX, pointY) < 2) {
+        if (Utils.distance(this.x, this.y, pointX, pointY) < .5) {
             this.curPointIndex ++;
 
             if (this.curPointIndex > this.path.length-1) {
