@@ -1,16 +1,19 @@
-import { Engine, Keyboard, Sprite } from "../engine";
-import Game from "../Game";
-import GameGui from "../gui/game/GameGui";
-import Cells from "../managers/Cells";
-import PlayerHelpers from "../managers/PlayerHelpers";
-import Screen from "../managers/Screen";
-import Config from "../utils/Config";
-import Cell from "./cells/Cell";
-import EmptyCell from "./cells/EmptyCell";
+import { Engine, Keyboard, Sprite } from "../../engine";
+import Game from "../../Game";
+import GameGui from "../../gui/game/GameGui";
+import Cells from "../../managers/Cells";
+import PlayerHelpers from "../../managers/PlayerHelpers";
+import Screen from "../../managers/Screen";
+import Config from "../../utils/Config";
+import Cell from "../cells/Cell";
+import EmptyCell from "../cells/EmptyCell";
+import PlacingArea from "./PlacingArea";
 
 export default class Cursor extends Sprite {
     emptyCell: EmptyCell = new EmptyCell();
     sizeAnimationTimer = Engine.createTimer(4);
+    placingArea = new PlacingArea()
+    
     cellBelow: Cell = this.emptyCell;
     
     constructor() {
@@ -74,8 +77,25 @@ export default class Cursor extends Sprite {
         if (this.allowMove && this.cellBelow)
             PlayerHelpers.setTooltip(this.cellBelow.getTooltipName());
 
+        
+        this.placingArea.x = this.x - 4;
+        this.placingArea.y = this.y - 4;
+        const curBuilding = GameGui.ordersMenu.currentBuilding
+        if (curBuilding) {
+            this.placingArea.setSize(curBuilding.cellsWidth, curBuilding.cellsHeight)
+            this.placingArea.frame.y = Cells.getCanBuildCell(curBuilding, this.x, this.y) ? 0 : 16
+            
+            this.placingArea.update()
+        }
+
         //
         this.updateAnimation();
+    }
+    draw(): void {
+        if (GameGui.ordersMenu.currentBuilding)
+            this.placingArea.draw()
+        else
+            super.draw();
     }
 
     updateBounds() {

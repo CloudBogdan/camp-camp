@@ -1,11 +1,12 @@
 import Cells from "../../managers/Cells";
 import CellsRegistry from "../../registries/CellsRegistry";
 import Menu, { IMenuButton } from "../../menus/Menu";
-import Inventory from "../../managers/Inventory";
 import Objects from "../../managers/Objects";
 import Screen from "../../managers/Screen";
 
 export default class OrdersMenu extends Menu {
+    currentBuilding: Cell | null = null
+    
     constructor() {
         super("orders");
 
@@ -22,7 +23,9 @@ export default class OrdersMenu extends Menu {
                 spriteSX: icon.sliceX,
                 spriteSY: icon.sliceY,
                 onClick: ()=> Cells.buildCell(cellCallback(), Objects.cursor.x, Objects.cursor.y),
-                disabled: ()=> !Inventory.canRemove(cell.getBuildCost()) || !Cells.isEmptyAt(Objects.cursor.x, Objects.cursor.y, cell.cellsWidth, cell.cellsHeight),
+                onEnter: ()=> this.currentBuilding = cell,
+                onOut: ()=> this.currentBuilding = null,
+                disabled: ()=> !Cells.getCanBuildCell(cell, Objects.cursor.x, Objects.cursor.y),
                 cost: cell.getBuildCost(),
                 building: true,
                 blur: true
@@ -42,7 +45,9 @@ export default class OrdersMenu extends Menu {
                     spriteSX: icon.sliceX,
                     spriteSY: icon.sliceY,
                     onClick: ()=> Cells.placeCell(cellCallback(), Objects.cursor.x, Objects.cursor.y),
-                    disabled: ()=> !Cells.isEmptyAt(Objects.cursor.x, Objects.cursor.y, cell.cellsWidth, cell.cellsHeight),
+                    onEnter: ()=> this.currentBuilding = cell,
+                    onOut: ()=> this.currentBuilding = null,
+                    disabled: ()=> !Cells.getCanBuildCell(cell, Objects.cursor.x, Objects.cursor.y, true),
                     building: true,
                     blur: true
                 }

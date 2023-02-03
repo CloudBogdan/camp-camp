@@ -1,5 +1,5 @@
 import CampfireCell from "../objects/cells/buildings/CampfireCell";
-import Cursor from "../objects/Cursor";
+import Cursor from "../objects/cursor/Cursor";
 
 export default class Objects {
     static cursor: Cursor;

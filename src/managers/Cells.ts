@@ -8,6 +8,7 @@ import LayoutCell from "../objects/cells/buildings/LayoutCell";
 import Orders, { Order, OrderType } from "./Orders";
 import Screen from "./Screen";
 import Cell from "../objects/cells/Cell";
+import Inventory from "./Inventory";
 
 export default class Cells {
     static cellsGroup: Group<Cell> = new Group();
@@ -99,6 +100,9 @@ export default class Cells {
             return isHumanInHouse || house.getLetIn();
         });
         return Utils.sortNearestObjectTo(houses, x, y).sort((a, b)=> b.level - a.level);
+    }
+    static getCanBuildCell(cell: Cell, x: number, y: number, ignoreCost: boolean=false): boolean {
+        return (ignoreCost ? true : Inventory.canRemove(cell.getBuildCost())) && this.isEmptyAt(x, y, cell.cellsWidth, cell.cellsHeight)
     }
 
     //

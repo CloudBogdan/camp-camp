@@ -20,6 +20,9 @@ import angryEmotion_png from "./assets/images/gui/angry-emotion.png";
 import tiredEmotion_png from "./assets/images/gui/tired-emotion.png";
 import foodEmotion_png from "./assets/images/gui/food-emotion.png";
 import nextTabIcon_png from "./assets/images/gui/next-tab-icon.png";
+import placingArea1x1_png from "./assets/images/gui/placing-area-1x1.png";
+import placingArea2x1_png from "./assets/images/gui/placing-area-2x1.png";
+import placingArea2x2_png from "./assets/images/gui/placing-area-2x2.png";
 
 import house_png from "./assets/images/cells/house.png";
 import gardener_png from "./assets/images/cells/gardener.png";
@@ -61,6 +64,9 @@ Engine.prestart = ()=> {
     Assets.loadImage("tired-emotion", tiredEmotion_png);
     Assets.loadImage("food-emotion", foodEmotion_png);
     Assets.loadImage("next-tab-icon", nextTabIcon_png);
+    Assets.loadImage("placing-area-1x1", placingArea1x1_png);
+    Assets.loadImage("placing-area-2x1", placingArea2x1_png);
+    Assets.loadImage("placing-area-2x2", placingArea2x2_png);
 
     Assets.loadImage("house", house_png);
     Assets.loadImage("gardener", gardener_png);
