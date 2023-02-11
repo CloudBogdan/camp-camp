@@ -29,7 +29,7 @@ export default class DwellingCell extends BuildingCell {
         return true;
     }
     enter(human: Human): boolean {
-        if (!this.getLetIn()) return false;
+        if (!this.getLetIn(human)) return false;
         
         this.humans.push(human);
         human.onEnterDwelling(this);
@@ -66,7 +66,7 @@ export default class DwellingCell extends BuildingCell {
     }
     
     // Get
-    getLetIn(): boolean {
+    getLetIn(human: Human | null): boolean {
         return (
             this.humans.length < this.getMaxHumans() &&
             (this.order ? !this.order.equals([OrderType.BREAK, OrderType.UPGRADE]) : true)

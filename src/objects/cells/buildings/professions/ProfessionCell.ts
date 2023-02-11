@@ -4,6 +4,7 @@ import { OrderType } from "../../../../managers/orders/Order";
 
 export default class ProfessionCell extends DwellingCell {
     owner: Human | null = null;
+    worker: Human | null = null;
     
     constructor(name: string) {
         super(name);
@@ -33,6 +34,7 @@ export default class ProfessionCell extends DwellingCell {
         if (human.professions.is(ProfessionClass)) return false;
 
         human.professions.learn(new ProfessionClass()).then(profession=> {
+            this.worker = human;
             this.release(human);
             human.onTakeJob(this, profession);
         });
@@ -40,10 +42,12 @@ export default class ProfessionCell extends DwellingCell {
         return true;
     }
     dismiss() {
-        if (this.owner) {
-            this.owner.onLostJob(this, this.owner.professions.current);
-            this.owner.professions.set(new NoneProfession());
+        if (this.worker) {
+            this.worker.onLostJob(this, this.worker.professions.current);
+            this.worker.professions.set(new NoneProfession());
+
             this.owner = null;
+            this.worker = null
         }
     }
 
@@ -66,7 +70,7 @@ export default class ProfessionCell extends DwellingCell {
             {
                 text: "уволить",
                 onClick: ()=> this.dismiss(),
-                visible: ()=> (this.owner ? this.owner.professions.is(this.getProfessionClass()) : false) && !this.getIsLearning(),
+                visible: ()=> !!this.worker && !this.getIsLearning(),
                 blur: true,
             },
             ...super.getOrdersMenuTab(menu)
@@ -82,7 +86,7 @@ export default class ProfessionCell extends DwellingCell {
         
         return super.getNamePrefix();
     }
-    getLetIn(): boolean {
-        return !this.owner && super.getLetIn();
+    getLetIn(human: Human): boolean {
+        return !this.worker && (!!this.owner ? this.owner == human : true) && super.getLetIn(human);
     }
 }

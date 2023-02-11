@@ -19,9 +19,9 @@ export default class HappinessNeed extends SampleHumanNeed {
             this.value -= 1 / 60;
         }
 
-        if (human.social.level < .4) {
-            this.value -= 1 / 300;
-        }
+        // if (human.social.level < .4) {
+        //     this.value -= 1 / 300;
+        // }
     }
 
     onHumanOrderDone(human: Human, order: Order, success: boolean): void {

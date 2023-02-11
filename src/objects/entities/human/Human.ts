@@ -38,7 +38,7 @@ export default class Human extends Entity {
     saturation = new SaturationNeed();
     stamina = new StaminaNeed();
     rest = new RestNeed();
-    social = new SocialNeed();
+    // social = new SocialNeed();
     isTired: boolean = false;
 
     dwellingCell: DwellingCell | null = null;
@@ -56,7 +56,7 @@ export default class Human extends Entity {
         this.needs.addNeed("happiness", this.happiness);
         this.needs.addNeed("saturation", this.saturation);
         this.needs.addNeed("stamina", this.stamina);
-        this.needs.addNeed("social", this.social);
+        // this.needs.addNeed("social", this.social);
         this.needs.addNeed("rest", this.rest);
     }
 
@@ -193,6 +193,8 @@ export default class Human extends Entity {
         this.needs.onEnterDwelling(dwellingCell);
     }
     onOutDwelling(dwellingCell: DwellingCell) {
+        this.walkAround()
+        
         this.active = true;
         this.dwellingCell = null;
 
@@ -208,6 +210,7 @@ export default class Human extends Entity {
 
     onCellsChanged() {
         this.updatePath();
+        this.findProfession()
     }
     
     //
@@ -252,7 +255,8 @@ export default class Human extends Entity {
     findProfession() {
         if (!this.professions.is(NoneProfession)) return;
         
-        const cell = Utils.sortNearestObjectTo(Cells.getCells<ProfessionCell>(ProfessionCell), this.x, this.y).filter(c=> c.getLetIn())[0];
+        const cell = Utils.sortNearestObjectTo(Cells.getCells<ProfessionCell>(ProfessionCell), this.x, this.y).filter(c=> c.getLetIn(this))[0];
+        console.log(cell);
         if (cell) {
             const task = new LearnProfessionTask(this, cell);
 

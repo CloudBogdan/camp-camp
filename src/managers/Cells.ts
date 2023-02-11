@@ -105,7 +105,7 @@ export default class Cells {
         const houses = Cells.getCells<HouseCell>(HouseCell).filter(house=> {
             const isHumanInHouse = !!human && house.hasHuman(human);
             
-            return isHumanInHouse || house.getLetIn();
+            return isHumanInHouse || house.getLetIn(human || null);
         });
         return Utils.sortNearestObjectTo(houses, x, y).sort((a, b)=> b.level - a.level);
     }
