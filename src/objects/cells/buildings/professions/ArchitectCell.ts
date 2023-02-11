@@ -6,7 +6,7 @@ export default class ArchitectCell extends ProfessionCell {
     constructor() {
         super("architect");
 
-        this.animation.frames = [0];
+        this.animation.frames = [0, 1];
 
         this.load();
     }
@@ -24,8 +24,8 @@ export default class ArchitectCell extends ProfessionCell {
             }
         }
     }
-    getProfession(): HumanProfession {
-        return new ArchitectProfession();
+    getProfessionClass(): TypeofSampleHumanProfession {
+        return ArchitectProfession;
     }
     getDisplayName(): string {
         return "архитектор"

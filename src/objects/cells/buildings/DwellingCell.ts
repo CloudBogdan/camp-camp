@@ -1,6 +1,5 @@
-import { Order, OrderType } from "../../../managers/Orders";
+import { OrderType } from "../../../managers/orders/Order";
 import Utils from "../../../utils/Utils";
-// import Human from "../../entities/human/Human";
 import BuildingCell from "./BuildingCell";
 
 export default class DwellingCell extends BuildingCell {

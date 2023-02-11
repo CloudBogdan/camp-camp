@@ -1,11 +1,9 @@
 import { Random } from "../../../engine";
-import OrdersMenu from "../../../gui/game/OrdersMenu";
 import Cells from "../../../managers/Cells";
 import Humans from "../../../managers/humans/Humans";
 import Inventory from "../../../managers/Inventory";
-import Orders from "../../../managers/Orders";
+import Orders from "../../../managers/orders/Orders";
 import PlayerHelpers from "../../../managers/PlayerHelpers";
-import { IMenuButton, IMenuTabs } from "../../../menus/Menu";
 import Config from "../../../utils/Config";
 import { IPoint } from "../../../utils/types";
 import Utils from "../../../utils/Utils";

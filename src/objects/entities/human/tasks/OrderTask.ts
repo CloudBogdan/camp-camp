@@ -1,4 +1,3 @@
-import { Order } from "../../../../managers/Orders";
 import Config from "../../../../utils/Config";
 import Utils from "../../../../utils/Utils";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";

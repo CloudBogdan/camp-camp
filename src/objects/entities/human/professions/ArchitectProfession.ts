@@ -1,4 +1,4 @@
-import { OrderCategory, OrderType } from "../../../../managers/Orders";
+import { OrderCategory, OrderType } from "../../../../managers/orders/Order";
 import Palette from "../../../../utils/Palette";
 import SampleHumanProfession from "./SampleHumanProfession";
 

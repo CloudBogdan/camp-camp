@@ -1,5 +1,5 @@
 import { Random } from "../../../engine";
-import { OrderCategory, OrderType } from "../../../managers/Orders";
+import { OrderCategory, OrderType } from "../../../managers/orders/Order";
 import BuildingCell from "./BuildingCell";
 
 export default class StatueCell extends BuildingCell {

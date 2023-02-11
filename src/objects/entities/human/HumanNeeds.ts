@@ -1,4 +1,3 @@
-import { Order } from "../../../managers/Orders";
 import SampleHumanNeed from "./needs/SampleHumanNeed";
 import SampleHumanTask from "./tasks/SampleHumanTask";
 
@@ -84,12 +83,12 @@ export default class HumanNeeds {
         }
     }
 
-    onTakeJob(cell: ProfessionCell, profession: HumanProfession) {
+    onTakeJob(cell: ProfessionCell, profession: SampleHumanProfession) {
         for (const need of Object.values(this.map)) {
             need.onHumanTakeJob(this.human, cell, profession);
         }
     }
-    onLostJob(cell: ProfessionCell, profession: HumanProfession) {
+    onLostJob(cell: ProfessionCell, profession: SampleHumanProfession) {
         for (const need of Object.values(this.map)) {
             need.onHumanLostJob(this.human, cell, profession);
         }

@@ -23,8 +23,8 @@ export default class MinerCell extends ProfessionCell {
             }
         }
     }
-    getProfession(): HumanProfession {
-        return new MinerProfession()
+    getProfessionClass(): TypeofSampleHumanProfession {
+        return MinerProfession
     }
     getPreviewIcon(): ISpriteIcon {
         return {

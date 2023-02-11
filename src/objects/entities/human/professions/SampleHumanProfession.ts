@@ -1,4 +1,4 @@
-import { OrderCategory, OrderType } from "../../../../managers/Orders";
+import { OrderCategory, OrderType } from "../../../../managers/orders/Order";
 
 export interface IProfessionValues {
     [key: number]: number

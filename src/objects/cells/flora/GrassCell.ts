@@ -1,11 +1,9 @@
 import { Random } from "../../../engine";
 import Generator from "../../../managers/Generator";
-import { OrderType } from "../../../managers/Orders";
-import { IMenuButton } from "../../../menus/Menu";
-import OrdersMenu from "../../../gui/game/OrdersMenu";
 import PlantCell from "./PlantCell";
 import Cells from "../../../managers/Cells";
 import TreeCell from "./trees/TreeCell";
+import { OrderType } from "../../../managers/orders/Order";
 
 export default class GrassCell extends PlantCell {
     constructor() {

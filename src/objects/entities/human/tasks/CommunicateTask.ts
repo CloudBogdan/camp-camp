@@ -1,7 +1,6 @@
 import { Random } from "../../../../engine";
 import Cells from "../../../../managers/Cells";
 import { IPoint } from "../../../../utils/types";
-import Human from "../Human";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";
 
 export default class CommunicateTask extends SampleHumanTask {

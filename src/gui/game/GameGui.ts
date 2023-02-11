@@ -1,23 +1,18 @@
-import { Engine, FontColor, Renderer } from "../../engine";
-import PlayerHelpers from "../../managers/PlayerHelpers";
+import { Engine, Renderer } from "../../engine";
 import Config from "../../utils/Config";
 
-import OrdersMenu from "./OrdersMenu";
-import StatisticsGui from "./StatisticsGui";
+import PlayerHelpers from "../../managers/PlayerHelpers";
+import GameGuiObjects from "./GameGuiObjects";
 
 export default class GameGui {
     static fps = 0;
     
-    static ordersMenu: OrdersMenu;
-    static statistics: StatisticsGui;
-    
     static start() {
-        this.ordersMenu = new OrdersMenu();
-        this.statistics = new StatisticsGui(this);
+        GameGuiObjects.start()
     }
     static update() {
-        this.ordersMenu.update();
-        this.statistics.update();
+        GameGuiObjects.ordersMenu.update();
+        GameGuiObjects.statistics.update();
     }
     static draw() {
         if (Config.IS_DEV) {
@@ -28,8 +23,8 @@ export default class GameGui {
         
         this.drawTooltip();
         
-        this.ordersMenu.draw();
-        this.statistics.draw();
+        GameGuiObjects.ordersMenu.draw();
+        GameGuiObjects.statistics.draw();
     }
 
     private static drawTooltip() {

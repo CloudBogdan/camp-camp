@@ -1,6 +1,5 @@
-import Orders, { Order } from "../../../managers/Orders";
+import Orders from "../../../managers/orders/Orders";
 import Utils from "../../../utils/Utils";
-import SampleHumanTask, { HumanTaskType } from "./tasks/SampleHumanTask";
 
 export default class HumanTasks {
     human: Human;

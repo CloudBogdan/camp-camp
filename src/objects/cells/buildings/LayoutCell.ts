@@ -1,12 +1,10 @@
 import { Assets } from "../../../engine/core/Assets";
 import Cells from "../../../managers/Cells";
-import { Order, OrderType } from "../../../managers/Orders";
-import { IMenuButton } from "../../../menus/Menu";
-import OrdersMenu from "../../../gui/game/OrdersMenu";
 import Utils from "../../../utils/Utils";
 import Cell from "../Cell";
 import BuildingCell from "./BuildingCell";
 import Inventory, { ICost } from "../../../managers/Inventory";
+import { OrderType } from "../../../managers/orders/Order";
 
 export default class LayoutCell extends BuildingCell {
     buildingCell: Cell;

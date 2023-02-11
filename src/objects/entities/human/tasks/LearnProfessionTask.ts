@@ -1,14 +1,15 @@
-import ProfessionCell from "../../../cells/buildings/professions/ProfessionCell";
 import NoneProfession from "../professions/NoneProfession";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";
 
 export default class LearnProfessionTask extends SampleHumanTask {
-    constructor(professionCell: ProfessionCell) {
+    constructor(human: Human, professionCell: ProfessionCell) {
         super(HumanTaskType.LEARN_PROFESSION, 1);
 
         this.hasDelay = true;
         this.cancelOnFail = true;
         this.targetCell = professionCell;
+
+        professionCell.own(human);
     }
 
     executing(human: Human): void {

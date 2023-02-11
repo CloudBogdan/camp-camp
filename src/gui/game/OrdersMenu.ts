@@ -1,7 +1,6 @@
 import Cells from "../../managers/Cells";
 import CellsRegistry from "../../registries/CellsRegistry";
-import Menu, { IMenuButton } from "../../menus/Menu";
-import Objects from "../../managers/Objects";
+import Menu from "../../menus/Menu";
 import Screen from "../../managers/Screen";
 
 export default class OrdersMenu extends Menu {
@@ -22,10 +21,10 @@ export default class OrdersMenu extends Menu {
                 sprite: icon.name,
                 spriteSX: icon.sliceX,
                 spriteSY: icon.sliceY,
-                onClick: ()=> Cells.buildCell(cellCallback(), Objects.cursor.x, Objects.cursor.y),
+                onClick: ()=> Cells.buildCell(cellCallback()),
                 onEnter: ()=> this.currentBuilding = cell,
                 onOut: ()=> this.currentBuilding = null,
-                disabled: ()=> !Cells.getCanBuildCell(cell, Objects.cursor.x, Objects.cursor.y),
+                disabled: ()=> !Cells.getCanBuildCell(cell),
                 cost: cell.getBuildCost(),
                 building: true,
                 blur: true
@@ -44,10 +43,10 @@ export default class OrdersMenu extends Menu {
                     sprite: icon.name,
                     spriteSX: icon.sliceX,
                     spriteSY: icon.sliceY,
-                    onClick: ()=> Cells.placeCell(cellCallback(), Objects.cursor.x, Objects.cursor.y),
+                    onClick: ()=> Cells.placeCell(cellCallback()),
                     onEnter: ()=> this.currentBuilding = cell,
                     onOut: ()=> this.currentBuilding = null,
-                    disabled: ()=> !Cells.getCanBuildCell(cell, Objects.cursor.x, Objects.cursor.y, true),
+                    disabled: ()=> !Cells.getCanBuildCell(cell, undefined, undefined, true),
                     building: true,
                     blur: true
                 }
@@ -62,18 +61,18 @@ export default class OrdersMenu extends Menu {
         this.x = Screen.x + Screen.width + 2;
         this.y = Screen.y;
 
-        this.updateOrders();
+        // this.updateOrders();
     }
-    updateOrders() {
-        const cellBelow = Objects.cursor.cellBelow;
-        if (!cellBelow) return;
+    updateOrders(cell: Cell) {
+        // const cellBelow = Objects.cursor.cellBelow;
+        // if (!cellBelow) return;
         
         this.tabs = {
             ...this.tabs,
             "orders": [
-                ...cellBelow.getOrdersMenuTab(this)
+                ...cell.getOrdersMenuTab(this)
             ],
-            ...cellBelow.getMenuTabs(this)
+            ...cell.getMenuTabs(this)
         }
     }
 }

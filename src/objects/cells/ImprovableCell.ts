@@ -1,9 +1,7 @@
-import { Order, OrderType } from "../../managers/Orders";
-import { IMenuButton } from "../../menus/Menu";
-import OrdersMenu from "../../gui/game/OrdersMenu";
 import Cell from "./Cell";
 import Inventory, { ICost } from "../../managers/Inventory";
 import Config from "../../utils/Config";
+import { OrderType } from "../../managers/orders/Order";
 
 export default class ImprovableCell extends Cell {
     level: number = 0;

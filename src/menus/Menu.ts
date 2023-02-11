@@ -4,7 +4,6 @@ import { ICost } from "../managers/Inventory";
 import Palette from "../utils/Palette";
 import Config from "../utils/Config";
 
-import Game from "../Game";
 import PlayerHelpers from "../managers/PlayerHelpers";
 import Utils from "../utils/Utils";
 
@@ -59,7 +58,7 @@ export default class Menu {
     
     //
     focus() {
-        Game.focusedMenu = this;
+        Engine.focusedMenu = this;
         this.isFocused = true;
         this.curButtonIndex = 0;
 
@@ -70,8 +69,8 @@ export default class Menu {
         if (button && button.onOut)
             button.onOut();
         
-        if (Game.focusedMenu == this)
-            Game.focusedMenu = null;
+        if (Engine.focusedMenu == this)
+            Engine.focusedMenu = null;
             
         this.curButtonIndex = 0;
         this.isFocused = false;

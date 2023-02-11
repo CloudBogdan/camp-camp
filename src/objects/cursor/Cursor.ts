@@ -1,11 +1,10 @@
 import { Engine, Keyboard, Sprite } from "../../engine";
-import Game from "../../Game";
-import GameGui from "../../gui/game/GameGui";
+import GameGuiObjects from "../../gui/game/GameGuiObjects";
+// import GameGui from "../../gui/game/GameGui";
 import Cells from "../../managers/Cells";
 import PlayerHelpers from "../../managers/PlayerHelpers";
 import Screen from "../../managers/Screen";
 import Config from "../../utils/Config";
-import Cell from "../cells/Cell";
 import EmptyCell from "../cells/EmptyCell";
 import PlacingArea from "./PlacingArea";
 
@@ -33,7 +32,7 @@ export default class Cursor extends Sprite {
     }
 
     move(dirX: number, dirY: number) {
-        if (Game.focusedMenu) return;
+        if (Engine.focusedMenu) return;
         if (dirX == 0 && dirY == 0) return;
         
         this.x += dirX * Config.GRID_SIZE;
@@ -49,6 +48,8 @@ export default class Cursor extends Sprite {
             this.cellBelow = cell;
         else
             this.cellBelow = this.emptyCell;
+
+        GameGuiObjects.ordersMenu.updateOrders(this.cellBelow)
     }
     animateScale(duration?: number) {
         this.animation.frameIndex = 1;
@@ -68,7 +69,7 @@ export default class Cursor extends Sprite {
             }
 
             if (Keyboard.justButton("enter")) {
-                GameGui.ordersMenu.focus();
+                GameGuiObjects.ordersMenu.focus();
                 Keyboard.reset()
                 this.animateScale(8);
             }
@@ -80,7 +81,7 @@ export default class Cursor extends Sprite {
         
         this.placingArea.x = this.x - 4;
         this.placingArea.y = this.y - 4;
-        const curBuilding = GameGui.ordersMenu.currentBuilding
+        const curBuilding = GameGuiObjects.ordersMenu.currentBuilding
         if (curBuilding) {
             this.placingArea.setSize(curBuilding.cellsWidth, curBuilding.cellsHeight)
             this.placingArea.frame.y = Cells.getCanBuildCell(curBuilding, this.x, this.y) ? 0 : 16
@@ -92,7 +93,7 @@ export default class Cursor extends Sprite {
         this.updateAnimation();
     }
     draw(): void {
-        if (GameGui.ordersMenu.currentBuilding)
+        if (GameGuiObjects.ordersMenu.currentBuilding)
             this.placingArea.draw()
         else
             super.draw();
@@ -115,7 +116,7 @@ export default class Cursor extends Sprite {
         if (!this.sizeAnimationTimer.active)
             this.animation.frameIndex = 0;
 
-        this.frame.y = +(!!Game.focusedMenu) * this.frame.height;
+        this.frame.y = +(!!Engine.focusedMenu) * this.frame.height;
     }
     destroy(): void {
         super.destroy();
@@ -126,6 +127,6 @@ export default class Cursor extends Sprite {
 
     // Get
     get allowMove(): boolean {
-        return !Game.focusedMenu;
+        return !Engine.focusedMenu;
     }
 }

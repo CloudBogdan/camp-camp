@@ -1,9 +1,7 @@
-import Humans from "../../../../managers/humans/Humans";
 import Inventory from "../../../../managers/Inventory";
 import Objects from "../../../../managers/Objects";
 import Config from "../../../../utils/Config";
 import Utils from "../../../../utils/Utils";
-import Human from "../Human";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";
 
 export default class EatTask extends SampleHumanTask {

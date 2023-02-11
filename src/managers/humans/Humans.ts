@@ -3,7 +3,7 @@ import Config from "../../utils/Config";
 import Palette from "../../utils/Palette";
 
 import Cells from "../Cells";
-import Orders, { Order } from "../Orders";
+import Orders from "../orders/Orders";
 import PlayerHelpers from "../PlayerHelpers";
 
 export default class Humans {

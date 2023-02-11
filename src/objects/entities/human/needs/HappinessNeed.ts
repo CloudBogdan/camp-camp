@@ -1,4 +1,3 @@
-import { Order } from "../../../../managers/Orders";
 import ProfessionCell from "../../../cells/buildings/professions/ProfessionCell";
 import SampleHumanNeed from "./SampleHumanNeed";
 
@@ -32,11 +31,11 @@ export default class HappinessNeed extends SampleHumanNeed {
         }
     }
     
-    onHumanTakeJob(human: Human, cell: ProfessionCell, profession: HumanProfession): void {
+    onHumanTakeJob(human: Human, cell: ProfessionCell, profession: SampleHumanProfession): void {
         human.emotion.set("happy");
         this.value += 10;
     }
-    onHumanLostJob(human: Human, cell: ProfessionCell, profession: HumanProfession): void {
+    onHumanLostJob(human: Human, cell: ProfessionCell, profession: SampleHumanProfession): void {
         human.emotion.set("sad");
         this.value -= 20;
     }

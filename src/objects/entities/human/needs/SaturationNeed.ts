@@ -1,7 +1,5 @@
 import { Engine } from "../../../../engine";
 import Inventory from "../../../../managers/Inventory";
-import { Order } from "../../../../managers/Orders";
-import Human from "../Human";
 import EatTask from "../tasks/EatTask";
 import { HumanTaskType } from "../tasks/SampleHumanTask";
 import SampleHumanNeed from "./SampleHumanNeed";

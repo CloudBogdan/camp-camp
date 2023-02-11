@@ -1,6 +1,4 @@
 import { ISpriteIcon } from "../../../engine";
-import { IMenuButton } from "../../../menus/Menu";
-import OrdersMenu from "../../../gui/game/OrdersMenu";
 import DwellingCell from "./DwellingCell";
 import { ICost } from "../../../managers/Inventory";
 

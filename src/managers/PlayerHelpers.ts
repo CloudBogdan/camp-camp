@@ -1,7 +1,8 @@
 import { Engine, FontColor, Renderer } from "../engine";
 import { Assets } from "../engine/core/Assets";
 import Config from "../utils/Config";
-import Orders, { OrderType } from "./Orders";
+import { OrderType } from "./orders/Order";
+import Orders from "./orders/Orders";
 
 export default class PlayerHelpers {
     static highlightHumans: boolean = false;

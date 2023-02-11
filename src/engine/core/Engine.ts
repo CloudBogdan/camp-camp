@@ -15,6 +15,7 @@ export class Engine {
     static started: boolean = false;
     static isDebug: boolean = false;
 
+    static focusedMenu: Menu | null = null;
     static currentStage: typeof Stage; 
     static clock: IEngineClock = {
         time: 0,

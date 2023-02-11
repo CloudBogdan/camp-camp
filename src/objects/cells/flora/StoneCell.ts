@@ -1,10 +1,8 @@
 import { Engine, Random } from "../../../engine";
-import OrdersMenu from "../../../gui/game/OrdersMenu";
 import Generator from "../../../managers/Generator";
 import Inventory, { ICost } from "../../../managers/Inventory";
-import { Order, OrderType } from "../../../managers/Orders";
+import { OrderType } from "../../../managers/orders/Order";
 import Particles from "../../../managers/Particles";
-import { IMenuButton } from "../../../menus/Menu";
 import Utils from "../../../utils/Utils";
 import StoneParticle from "../../particles/StoneParticle";
 import Cell from "../Cell";

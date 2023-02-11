@@ -1,29 +1,28 @@
 import { Trigger } from "../../../engine";
 import Config from "../../../utils/Config";
 import NoneProfession from "./professions/NoneProfession";
-import SampleHumanProfession, { IProfessionValues } from "./professions/SampleHumanProfession";
 
 export default class HumanProfessions {
     human: Human
 
     learningTimeout: number = -1;
     isLearning: boolean = false;
-    current: HumanProfession = new NoneProfession();
+    current: SampleHumanProfession = new NoneProfession();
 
-    onChanged = new Trigger<HumanProfession>("human-professions/on-changed");
+    onChanged = new Trigger<SampleHumanProfession>("human-professions/on-changed");
     
     constructor(human: Human) {
         this.human = human;
     }
 
-    is(professionClass: typeof SampleHumanProfession): boolean {
+    is(professionClass: TypeofSampleHumanProfession): boolean {
         return this.current instanceof professionClass;
     }
-    set(profession: HumanProfession) {
+    set(profession: SampleHumanProfession) {
         this.current = profession;
         this.onChanged.notify(profession);
     }
-    learn(profession: HumanProfession): Promise<HumanProfession> {
+    learn(profession: SampleHumanProfession): Promise<SampleHumanProfession> {
         this.isLearning = true;
         
         return new Promise((resolve, reject)=> {

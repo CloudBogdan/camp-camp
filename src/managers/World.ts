@@ -6,7 +6,7 @@ import NavGrid from "./NavGrid";
 import Cells from "./Cells";
 import Humans from "./humans/Humans";
 import CampfireCell from "../objects/cells/buildings/CampfireCell";
-import Orders from "./Orders";
+import Orders from "./orders/Orders";
 import Generator from "./Generator";
 import Particles from "./Particles";
 import Flora from "./Flora";

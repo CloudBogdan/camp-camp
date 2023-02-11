@@ -5,10 +5,12 @@ import { IPoint } from "../utils/types";
 
 import HouseCell from "../objects/cells/buildings/HouseCell";
 import LayoutCell from "../objects/cells/buildings/LayoutCell";
-import Orders, { Order, OrderType } from "./Orders";
+import Orders from "./orders/Orders";
 import Screen from "./Screen";
 import Cell from "../objects/cells/Cell";
 import Inventory from "./Inventory";
+import Order, { OrderType } from "./orders/Order";
+import Objects from "./Objects";
 
 export default class Cells {
     static cellsGroup: Group<Cell> = new Group();
@@ -29,7 +31,10 @@ export default class Cells {
             return !cell.destroyed && cellPos.x == pos.x && cellPos.y == pos.y;
         }) || null;
     }
-    static placeCell(cell: Cell, x: number, y: number): Cell | null {
+    static placeCell(cell: Cell, x?: number, y?: number): Cell | null {
+        x = Utils.safeValue(x, Objects.cursor.x)
+        y = Utils.safeValue(y, Objects.cursor.y)
+        
         if (!this.isEmptyAt(x, y, cell.cellsWidth, cell.cellsHeight))
             return null;
         
@@ -43,7 +48,10 @@ export default class Cells {
 
         return cell;
     }
-    static buildCell(cell: Cell, x: number, y: number): Cell | null {
+    static buildCell(cell: Cell, x?: number, y?: number): Cell | null {
+        x = Utils.safeValue(x, Objects.cursor.x)
+        y = Utils.safeValue(y, Objects.cursor.y)
+        
         const layoutCell = new LayoutCell(cell);
         const result = this.placeCell(layoutCell, x, y);
         if (result) {
@@ -101,7 +109,10 @@ export default class Cells {
         });
         return Utils.sortNearestObjectTo(houses, x, y).sort((a, b)=> b.level - a.level);
     }
-    static getCanBuildCell(cell: Cell, x: number, y: number, ignoreCost: boolean=false): boolean {
+    static getCanBuildCell(cell: Cell, x?: number, y?: number, ignoreCost: boolean=false): boolean {
+        x = Utils.safeValue(x, Objects.cursor.x)
+        y = Utils.safeValue(y, Objects.cursor.y)
+        
         return (ignoreCost ? true : Inventory.canRemove(cell.getBuildCost())) && this.isEmptyAt(x, y, cell.cellsWidth, cell.cellsHeight)
     }
 

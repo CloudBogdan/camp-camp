@@ -1,13 +1,11 @@
 import { Random } from "../../../../engine";
-import OrdersMenu from "../../../../gui/game/OrdersMenu";
 import Animations from "../../../../utils/Animations";
 import Cells from "../../../../managers/Cells";
 import Inventory from "../../../../managers/Inventory";
-import Orders, { Order, OrderType } from "../../../../managers/Orders";
 import Particles from "../../../../managers/Particles";
-import { IMenuButton } from "../../../../menus/Menu";
 import LeafParticle from "../../../particles/LeafParticle";
 import PlantCell from "../PlantCell";
+import { OrderType } from "../../../../managers/orders/Order";
 
 export default class TreePlantCell extends PlantCell {
     constructor(name: string) {

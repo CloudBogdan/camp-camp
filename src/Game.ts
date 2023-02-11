@@ -8,11 +8,9 @@ import Screen from "./managers/Screen";
 import World from "./managers/World";
 
 export default class Game {
-    static focusedMenu: Menu | null = null;
-    
     static start() {
-        World.start();
         GameGui.start();
+        World.start();
         NavGrid.start();
     }
     static update() {

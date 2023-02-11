@@ -1,6 +1,6 @@
 import { Keyboard, Random, Renderer, State } from "../../../engine";
 import Palette from "../../../utils/Palette";
-import Orders, { Order } from "../../../managers/Orders";
+import Orders from "../../../managers/orders/Orders";
 import Entity from "../Entity";
 import DwellingCell from "../../cells/buildings/DwellingCell";
 import HumanTasks from "./HumanTasks";
@@ -131,6 +131,8 @@ export default class Human extends Entity {
         return houses[0] || null;
     }
     tryTakeOrder() {
+        if (this.professions.isLearning) return;
+        
         if (this.hasTasks([HumanTaskType.ORDER])) {
             const orderTask = this.tasks.queue.find(t=> !!t.targetOrder);
 
@@ -197,10 +199,10 @@ export default class Human extends Entity {
         this.needs.onOutDwelling(dwellingCell);
     }
 
-    onTakeJob(cell: ProfessionCell, profession: HumanProfession) {
+    onTakeJob(cell: ProfessionCell, profession: SampleHumanProfession) {
         this.needs.onTakeJob(cell, profession);
     }
-    onLostJob(cell: ProfessionCell, profession: HumanProfession) {
+    onLostJob(cell: ProfessionCell, profession: SampleHumanProfession) {
         this.needs.onLostJob(cell, profession);
     }
 
@@ -248,12 +250,15 @@ export default class Human extends Entity {
         return super.updatePath();
     }
     findProfession() {
-        if (!this.professions.is(NoneProfession) || this.getIsBusy()) return;
-
+        if (!this.professions.is(NoneProfession)) return;
+        
         const cell = Utils.sortNearestObjectTo(Cells.getCells<ProfessionCell>(ProfessionCell), this.x, this.y).filter(c=> c.getLetIn())[0];
         if (cell) {
-            const task = new LearnProfessionTask(cell);
-            this.tasks.addTask(task);
+            const task = new LearnProfessionTask(this, cell);
+
+            if (!this.getIsBusy(task)) {
+                this.tasks.addTask(task);
+            }
         }
     }
     releaseFromDwelling() {

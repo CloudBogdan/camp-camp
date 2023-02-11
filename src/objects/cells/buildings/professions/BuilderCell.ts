@@ -27,8 +27,8 @@ export default class BuilderCell extends ProfessionCell {
             }
         }
     }
-    getProfession(): HumanProfession {
-        return new BuilderProfession()
+    getProfessionClass(): TypeofSampleHumanProfession {
+        return BuilderProfession
     }
     getPreviewIcon(): ISpriteIcon {
         return {

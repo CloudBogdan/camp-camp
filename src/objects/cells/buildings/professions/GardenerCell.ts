@@ -23,8 +23,8 @@ export default class GardenerCell extends ProfessionCell {
             }
         }
     }
-    getProfession(): HumanProfession {
-        return new GardenerProfession()
+    getProfessionClass(): TypeofSampleHumanProfession {
+        return GardenerProfession
     }
     getPreviewIcon(): ISpriteIcon {
         return {

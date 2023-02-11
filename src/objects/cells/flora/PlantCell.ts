@@ -1,10 +1,8 @@
-import { IMenuButton } from "../../../menus/Menu";
-import OrdersMenu from "../../../gui/game/OrdersMenu";
 import Cell from "../Cell";
-import { Order, OrderType } from "../../../managers/Orders";
 import { ICost } from "../../../managers/Inventory";
 import Animations from "../../../utils/Animations";
 import { Engine } from "../../../engine";
+import { OrderType } from "../../../managers/orders/Order";
 
 export default class PlantCell extends Cell {
     grown: boolean = false;

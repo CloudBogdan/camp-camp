@@ -1,15 +1,14 @@
 import anime from "animejs";
 import { ISpriteIcon, Random, Sprite } from "../../engine";
 import Cells from "../../managers/Cells";
-import Orders, { Order, OrderCategory, OrderType } from "../../managers/Orders";
-import { IMenuButton, IMenuTabs } from "../../menus/Menu";
-import OrdersMenu from "../../gui/game/OrdersMenu";
+import Orders from "../../managers/orders/Orders";
 import Config from "../../utils/Config";
 import Pathfinding from "../../utils/Pathfinding";
 import { IPoint } from "../../utils/types";
 import Utils from "../../utils/Utils";
 import Inventory, { ICost } from "../../managers/Inventory";
 import Screen from "../../managers/Screen";
+import Order, { OrderCategory, OrderType } from "../../managers/orders/Order";
 
 export interface ICellValues {
     [key: number]: number

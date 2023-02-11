@@ -1,7 +1,6 @@
 import { Renderer } from "../../../engine";
 import { Assets } from "../../../engine/core/Assets";
-import { OrderType } from "../../../managers/Orders";
-import { IMenuButton } from "../../../menus/Menu";
+import { OrderType } from "../../../managers/orders/Order";
 import ImprovableCell from "../ImprovableCell";
 
 export default class BuildingCell extends ImprovableCell {

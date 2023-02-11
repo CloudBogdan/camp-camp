@@ -2,13 +2,13 @@ import { FontColor, Renderer } from "../../engine";
 import { Assets } from "../../engine/core/Assets";
 import Humans from "../../managers/humans/Humans";
 import Inventory, { ICost } from "../../managers/Inventory";
-import Orders from "../../managers/Orders";
+import Orders from "../../managers/orders/Orders";
 import PlayerHelpers from "../../managers/PlayerHelpers";
 import Screen from "../../managers/Screen";
 import Config from "../../utils/Config";
 import Palette from "../../utils/Palette";
 import Utils from "../../utils/Utils";
-import GameGui from "./GameGui";
+import GameGuiObjects from "./GameGuiObjects";
 
 interface IStatisticItem {
     name: string
@@ -21,7 +21,7 @@ interface IStatisticItem {
 }
 
 export default class StatisticsGui {
-    parent: typeof GameGui;
+    // parent: TypeofGameGui;
     
     x: number = 0;
     y: number = 0;
@@ -90,8 +90,9 @@ export default class StatisticsGui {
         },
     ]
     
-    constructor(parent: typeof GameGui) {
-        this.parent = parent;
+    // constructor(parent: TypeofGameGui) {
+    constructor() {
+        // this.parent = parent;
         
         
     }
@@ -101,7 +102,7 @@ export default class StatisticsGui {
         this.y = Screen.y;
     }
     draw() {
-        const cost: ICost = this.parent.ordersMenu.cost || {};
+        const cost: ICost = GameGuiObjects.ordersMenu.cost || {};
         const items = this.items.filter(item=> {
             const debug = item.debug ? Config.IS_DEV : true
             const advanced = item.advanced ? PlayerHelpers.showAdvancedStats : true

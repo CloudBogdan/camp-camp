@@ -27,7 +27,10 @@ export default class WalkTask extends SampleHumanTask {
         }
 
         if (Engine.time % 60 == 0) {
-            human.tryTakeOrder()
+            if (Random.bool(.5))
+                human.tryTakeOrder()
+            else
+                human.findProfession()
         }
     }
 

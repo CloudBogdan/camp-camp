@@ -4,7 +4,6 @@ import Config from "../../utils/Config";
 import Pathfinding from "../../utils/Pathfinding";
 import { IArrayPoint, IPoint } from "../../utils/types";
 import Utils from "../../utils/Utils";
-import Cell from "../cells/Cell";
 
 export default class Entity extends Sprite {
     moveSpeed: number = 8;

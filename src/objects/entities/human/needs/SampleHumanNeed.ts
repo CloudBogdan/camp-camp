@@ -1,4 +1,3 @@
-import { Order } from "../../../../managers/Orders";
 import Utils from "../../../../utils/Utils";
 import SampleHumanTask from "../tasks/SampleHumanTask";
 
@@ -27,8 +26,8 @@ export default class SampleHumanNeed {
     onHumanEnterDwelling(human: Human, dwellingCell: DwellingCell) {}
     onHumanOutDwelling(human: Human, dwellingCell: DwellingCell) {}
 
-    onHumanTakeJob(human: Human, cell: ProfessionCell, profession: HumanProfession) {}
-    onHumanLostJob(human: Human, cell: ProfessionCell, profession: HumanProfession) {}
+    onHumanTakeJob(human: Human, cell: ProfessionCell, profession: SampleHumanProfession) {}
+    onHumanLostJob(human: Human, cell: ProfessionCell, profession: SampleHumanProfession) {}
 
     // Get / set
     get value(): number {
