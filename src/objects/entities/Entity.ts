@@ -75,9 +75,9 @@ export default class Entity extends Sprite {
         this.velocity.y += vel.y * this.moveSpeed;
     }
     moveTo(x: number, y: number): boolean {
-        this.isMoving = true;
-        
         const result = this.calculatePath(x, y);
+        
+        this.isMoving = true;
         return result;
     }
     moveToCell(cell: Cell): boolean {
@@ -119,6 +119,5 @@ export default class Entity extends Sprite {
     //
     get isStopped(): boolean {
         return !this.isMoving;
-        // return !this.isMoving && this.curPointIndex >= this.path.length-1;
     }
 }

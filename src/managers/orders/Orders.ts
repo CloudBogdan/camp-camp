@@ -30,8 +30,6 @@ export default class Orders {
         
         if (successPaths.length > 0) {
             order.onAdd();
-
-            Particles.addParticles(()=> new OrderParticle(), ()=> order.targetCell.x, ()=> order.targetCell.y);
             
             this.orders.splice(0, 0, order);
             this.onChanged.notify({ order, type: OrderChangeType.ADDED });
@@ -62,41 +60,24 @@ export default class Orders {
     static takeSuitableOrder(human: Human): Order | null {
         const order = this.getSuitableOrder(human);
         if (!order) return null;
-
-        order.executor = human;
-        order.onTake(human);
         
-        human.onTakeOrder(order);
-        order.targetCell.onTakeOrder(order);
+        order.onTake(human);
         
         return order;
     }
     static doneOrder(order: Order | null, success: boolean): Order | null {
-        if (!order) return null;
         const removedOrder = Utils.removeItem(this.orders, order);
-        if (!removedOrder) return null;
+        if (!removedOrder || !removedOrder.exists) return null;
 
-        removedOrder.onDone();
-        
-        removedOrder.targetCell.onOrderDone(removedOrder, success);
-        removedOrder.executor && removedOrder.executor.onOrderDone(removedOrder, success);
+        removedOrder.onDone(success);
         
         return removedOrder;
     }
     static cancelOrder(order: Order | null): Order | null {
-        if (!order) return null;
         const removedOrder = Utils.removeItem(this.orders, order);
-        if (!removedOrder) return null;
+        if (!removedOrder || !removedOrder.exists) return null;
 
         removedOrder.onCancel();
-
-        const orderParticle = new OrderParticle();
-        orderParticle.animation.reversed = true;
-        orderParticle.animation.frameIndex = orderParticle.animation.frames.length-1;
-        Particles.addParticles(()=> orderParticle, ()=> removedOrder.targetCell.x, ()=> removedOrder.targetCell.y);
-
-        removedOrder.targetCell.onOrderCancel(removedOrder);
-        removedOrder.executor && removedOrder.executor.onOrderCancel(removedOrder);
 
         return removedOrder;
     }

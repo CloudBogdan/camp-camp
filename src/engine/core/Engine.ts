@@ -62,12 +62,12 @@ export class Engine {
             this.currentStage.draw();
     }
 
-    // static init(initStage: typeof Stage) {
-    //     this.currentStage = initStage;
     static init() {
         Assets.init();
         Renderer.init();
         Keyboard.init();
+
+        console.log("%cSource code is here! :D\nhttps://github.com/CloudBogdan/little-colony", "color: orange; font-size: 18px");
 
         this._prestart()
 

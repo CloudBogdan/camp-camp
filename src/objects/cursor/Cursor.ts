@@ -1,6 +1,5 @@
 import { Engine, Keyboard, Sprite } from "../../engine";
 import GameGuiObjects from "../../gui/game/GameGuiObjects";
-// import GameGui from "../../gui/game/GameGui";
 import Cells from "../../managers/Cells";
 import PlayerHelpers from "../../managers/PlayerHelpers";
 import Screen from "../../managers/Screen";
@@ -48,8 +47,6 @@ export default class Cursor extends Sprite {
             this.cellBelow = cell;
         else
             this.cellBelow = this.emptyCell;
-
-        GameGuiObjects.ordersMenu.updateOrders(this.cellBelow)
     }
     animateScale(duration?: number) {
         this.animation.frameIndex = 1;
@@ -88,7 +85,7 @@ export default class Cursor extends Sprite {
             
             this.placingArea.update()
         }
-
+        
         //
         this.updateAnimation();
     }

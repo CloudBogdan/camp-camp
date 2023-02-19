@@ -9,12 +9,14 @@ export default class Generator {
     static seed: number = 0;
     
     static start() {
-        // this.seed = Date.now();
-        this.seed = 1672760807702;
+        this.seed = Date.now();
+
+        if (Config.IS_DEV) {
+            this.seed = 1672760807702;
+            console.log(this.seed);
+        }
         
         Noise.seed(this.seed);
-
-        console.log(this.seed);
     }
 
     static generate() {

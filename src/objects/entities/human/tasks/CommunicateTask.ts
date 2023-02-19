@@ -16,6 +16,7 @@ export default class CommunicateTask extends SampleHumanTask {
             this.targetPos = meetAt;
             
         this.passive = passive;
+        this.allowRepetitions = false;
         this.cancelOnDeffer = true;
         this.cancelOnFail = true
     }
@@ -61,6 +62,6 @@ export default class CommunicateTask extends SampleHumanTask {
     onDone(human: Human, success: boolean): void {
         super.onDone(human, success);
 
-        human.social.value += 60;
+        // human.social.value += 60;
     }
 }

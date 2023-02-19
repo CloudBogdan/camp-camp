@@ -8,7 +8,7 @@ export default class EatTask extends SampleHumanTask {
     constructor(human: Human) {
         super(HumanTaskType.EAT, 4);
 
-        this.hasDelay = true;
+        this.allowRepetitions = false;
         this.cancelOnFail = true;
         this.cancelOnDeffer = true;
         this.canTakeOrders = false;
@@ -18,6 +18,8 @@ export default class EatTask extends SampleHumanTask {
 
     onTake(human: Human): void {
         super.onTake(human);
+
+        human.emotion.set("food");
     }
 
     executing(human: Human): void {
@@ -29,13 +31,7 @@ export default class EatTask extends SampleHumanTask {
             this.eat(human);
         }
     }
-    onDone(human: Human, success: boolean): void {
-        super.onDone(human, success);
-
-        if (!success)
-            human.emotion.set("food");
-    }
-
+    
     eat(human: Human) {
         const saturation = human.saturation;
 

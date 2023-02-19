@@ -2,6 +2,7 @@ import Cells from "../../managers/Cells";
 import CellsRegistry from "../../registries/CellsRegistry";
 import Menu from "../../menus/Menu";
 import Screen from "../../managers/Screen";
+import Objects from "../../managers/Objects";
 
 export default class OrdersMenu extends Menu {
     currentBuilding: Cell | null = null
@@ -61,11 +62,11 @@ export default class OrdersMenu extends Menu {
         this.x = Screen.x + Screen.width + 2;
         this.y = Screen.y;
 
-        // this.updateOrders();
+        this.updateTabs()
     }
-    updateOrders(cell: Cell) {
-        // const cellBelow = Objects.cursor.cellBelow;
-        // if (!cellBelow) return;
+    updateTabs() {
+        const cell = Objects.cursor.cellBelow;
+        if (!cell) return;
         
         this.tabs = {
             ...this.tabs,

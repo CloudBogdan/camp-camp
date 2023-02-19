@@ -6,7 +6,7 @@ export default class RestTask extends SampleHumanTask {
     constructor(human: Human) {
         super(HumanTaskType.REST, 1, false);
 
-        this.hasDelay = true;
+        this.allowRepetitions = false;
         this.cancelOnFail = true;
         this.cancelOnDeffer = true;
         this.targetCell = human.getHouse();

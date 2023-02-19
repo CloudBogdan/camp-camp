@@ -63,8 +63,12 @@ export default class Humans {
     static update() {
         this.humansGroup.update();
 
-        if (Keyboard.justKey("V"))
-            console.log(this.humans);
+        if (Config.IS_DEV) {
+            if (Keyboard.justKey("V"))
+                console.log(this.humans);
+            if (Keyboard.justKey("T"))
+                console.log(this.humans.map(h=> h.tasks));
+        }
         
         this.calculateHumansNeeds();
     }

@@ -32,12 +32,12 @@ export default class SocialNeed extends SampleHumanNeed {
         if (this.getIsWantToCommunicate() && this.communicateTaskCooldown.finished && !human.hasTasks([HumanTaskType.COMMUNICATE])) {
             // Eww
             const task = new CommunicateTask();
-            const targetHuman = Humans.humans.filter(h=> h != human && !h.getIsBusy() && h.active && h.social.getIsWantToCommunicate() && !h.hasTasks([HumanTaskType.COMMUNICATE])).sort((a, b)=> a.distance(human.x, human.y) - b.distance(human.x, human.y))[0] || null;
+            // const targetHuman = Humans.humans.filter(h=> h != human && !h.getIsBusy() && h.active && h.social.getIsWantToCommunicate() && !h.hasTasks([HumanTaskType.COMMUNICATE])).sort((a, b)=> a.distance(human.x, human.y) - b.distance(human.x, human.y))[0] || null;
 
-            if (targetHuman) {
-                task.targetHuman = targetHuman;
-                human.tasks.addTask(task);
-            }
+            // if (targetHuman) {
+            //     task.targetHuman = targetHuman;
+            //     human.tasks.addTask(task);
+            // }
             
             this.communicateTaskCooldown.start();
         }

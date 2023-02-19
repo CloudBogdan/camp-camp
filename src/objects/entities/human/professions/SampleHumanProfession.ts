@@ -23,7 +23,7 @@ export default class SampleHumanProfession {
         
         [OrderType.BREAK]: .9,
         [OrderType.UPGRADE]: .8,
-        [OrderType.CLEAR]: .7,
+        [OrderType.CLEAR]: 1,
         [OrderType.MINE]: .8,
         [OrderType.HARVEST]: .7
     }
@@ -32,7 +32,7 @@ export default class SampleHumanProfession {
         [OrderType.CHOP]: 1,
         [OrderType.BREAK]: .8,
         [OrderType.UPGRADE]: .9,
-        [OrderType.CLEAR]: .3,
+        [OrderType.CLEAR]: .2,
         [OrderType.MINE]: 1.6,
         [OrderType.HARVEST]: .8
     }

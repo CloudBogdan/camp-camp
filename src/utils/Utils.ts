@@ -25,7 +25,8 @@ export default class Utils {
         return value;
     }
     
-    static removeItem<T>(array: T[], item: T): T | null {
+    static removeItem<T>(array: T[], item: T | null): T | null {
+        if (!item) return null;
         const index = array.indexOf(item);
         if (index < 0) return null;
         

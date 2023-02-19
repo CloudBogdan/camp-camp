@@ -1,20 +1,24 @@
+import Orders from "../../../../managers/orders/Orders";
+import Config from "../../../../utils/Config";
 import { IPoint } from "../../../../utils/types";
 import Utils from "../../../../utils/Utils";
 
 export enum HumanTaskType {
-    ORDER,
-    MOVE_TO,
-    USE_CELL,
-    REST,
-    EAT,
-    LEARN_PROFESSION,
-    WALK,
-    COMMUNICATE
+    ORDER = "order",
+    MOVE_TO = "move-to",
+    USE_CELL = "use-cell",
+    REST = "rest",
+    EAT = "eat",
+    LEARN_PROFESSION = "learn-profession",
+    WALK = "walk",
+    COMMUNICATE = "communicate"
 }
 
 export default class SampleHumanTask {
     type: HumanTaskType;
     active: boolean = false;
+    process: boolean = false;
+    exists: boolean = true;
     priority: number;
     time: number;
     private _progress: number = 0;
@@ -22,10 +26,9 @@ export default class SampleHumanTask {
     isWork: boolean = false;
     cancelOnFail: boolean = false;
     cancelOnDeffer: boolean = false;
-    hasDelay: boolean = false;
     canTakeOrders: boolean = true;
+    allowRepetitions: boolean = true;
 
-    targetOrder: Order | null = null;
     targetCell: Cell | null = null;
     targetPos: IPoint | null = null;
     
@@ -37,21 +40,53 @@ export default class SampleHumanTask {
     }
 
     onAdded(human: Human) {
-
+        human.onTaskAdded(this);
     }
     onTake(human: Human) {
-        const targetCell = this.targetCell || this.targetOrder?.targetCell;
+        this.active = true;
+        
+        const targetCell = this.targetCell;
         
         if (targetCell)
             human.moveToCell(targetCell);
         else if (this.targetPos)
             human.moveTo(this.targetPos.x, this.targetPos.y);
+
+        if (Config.LOG_TASKS) {
+            console.log(`\n== ${ this.type.toUpperCase() } ==`)
+            console.log(`⏩ ${ this.type.toUpperCase() } - Task took`);
+        }
+            
+        human.onTakeTask(this);
+    }
+    onDone(human: Human, success: boolean) {
+        if (Config.LOG_TASKS)
+            console.log(`✅ ${ this.type.toUpperCase() } - Task done`);
+
+        this.destroy(human);
+        
+        human.onTaskDone(this, success);
+    }
+    onCancel(human: Human) {
+        if (Config.LOG_TASKS)
+            console.log(`⭕ ${ this.type.toUpperCase() } - Task cancel`);
+            
+        this.destroy(human);
+        
+        human.onTaskCancel(this);
+    }
+    onDeferred(human: Human) {
+        this.active = false;
+        this.process = false;
+
+        if (this.cancelOnDeffer)
+            human.tasks.cancelTask(this);
     }
     startExecute(human: Human) {
-        this.active = true;
+        this.process = true;
     }
     executing(human: Human) {
-        if (!this.active) {
+        if (!this.process) {
             this.startExecute(human);
         }
         
@@ -62,38 +97,26 @@ export default class SampleHumanTask {
                 human.tasks.cancelTask(this);
         }
     }
-    onDone(human: Human, success: boolean) {
-        this.destroy(human);
-    }
-    onCancel(human: Human) {
-        this.destroy(human);
-    }
-    onDeferred(human: Human) {
-        this.active = false;
-
-        if (this.cancelOnDeffer)
-            human.tasks.cancelTask(this);
-    }
     update(human: Human) {
-        const targetCell = this.targetCell || this.targetOrder?.targetCell;
+        const targetCell = this.targetCell;
         const targetPos = targetCell ? targetCell.getCenter() : this.targetPos;
         const hasTarget = !!targetCell || !!this.targetPos;
 
         if (hasTarget && targetPos) {
-            const isTargetNear = human.isStopped && human.distance(targetPos.x, targetPos.y) < 8;
-            
-            if (isTargetNear) {
+            if (human.isStopped && human.distance(targetPos.x, targetPos.y) < 8) {
                 this.executing(human);
             }
         } else
             this.executing(human);
 
-        if (targetCell && targetCell.destroyed) {
+        if (targetCell ? targetCell.destroyed : false) {
             human.tasks.cancelTask(this);
         }
     }
     destroy(human: Human) {
+        this.exists = false;
         this.active = false;
+        this.process = false;
     }
 
     //
@@ -101,7 +124,7 @@ export default class SampleHumanTask {
         return this.priority;
     }
     getCanTakeOrders(human: Human): boolean {
-        return this.canTakeOrders;
+        return this.active ? this.canTakeOrders : true;
     }
     
     //

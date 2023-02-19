@@ -22,7 +22,6 @@ import WalkTask from "./tasks/WalkTask";
 import RestNeed from "./needs/RestNeed";
 import Objects from "../../../managers/Objects";
 import SampleHumanTask, { HumanTaskType } from "./tasks/SampleHumanTask";
-import SocialNeed from "./needs/SocialNeed";
 
 export enum HumanState {
     NORMAL,
@@ -38,10 +37,10 @@ export default class Human extends Entity {
     saturation = new SaturationNeed();
     stamina = new StaminaNeed();
     rest = new RestNeed();
-    // social = new SocialNeed();
     isTired: boolean = false;
 
     dwellingCell: DwellingCell | null = null;
+    professionCell: ProfessionCell | null = null;
 
     color = Palette.WHITE;
     state = new State<HumanState>(HumanState.NORMAL);
@@ -56,13 +55,11 @@ export default class Human extends Entity {
         this.needs.addNeed("happiness", this.happiness);
         this.needs.addNeed("saturation", this.saturation);
         this.needs.addNeed("stamina", this.stamina);
-        // this.needs.addNeed("social", this.social);
         this.needs.addNeed("rest", this.rest);
     }
 
     create() {
-        const walkTask = new WalkTask();
-        this.tasks.addTask(walkTask);
+        this.tasks.addTask(new WalkTask());
                 
         this.tryTakeOrder();
         this.findProfession();
@@ -83,7 +80,7 @@ export default class Human extends Entity {
     }
     updateTask() {
         this.tasks.updateCurrentTask();
-
+        
         if (this.dwellingCell && !(this.tasks.current?.targetCell instanceof DwellingCell)) {
             this.releaseFromDwelling();
         }
@@ -133,34 +130,22 @@ export default class Human extends Entity {
     tryTakeOrder() {
         if (this.professions.isLearning) return;
         
-        if (this.hasTasks([HumanTaskType.ORDER])) {
-            const orderTask = this.tasks.queue.find(t=> !!t.targetOrder);
-
-            if (orderTask)
-                this.tasks.takeTask(orderTask);
-        } else 
+        const orderTask = this.tasks.queue.find(t=> t instanceof OrderTask);
+        if (orderTask) {
+            this.tasks.takeTask(orderTask);
+        } else {
             Orders.takeSuitableOrder(this);
+        }
     }
     
     //
     onTakeOrder(order: Order) {
-        const task = new OrderTask(order);
-        this.tasks.addTask(task);
-
         this.needs.onTakeOrder(order);
     }
     onOrderCancel(order: Order) {
-        this.tasks.getTasksWithOrder(order).map(task=>
-            this.tasks.cancelTask(task)
-        );
-
         this.needs.onOrderCancel(order);
     }
     onOrderDone(order: Order, success: boolean) {
-        this.tasks.getTasksWithOrder(order).map(task=>
-            this.tasks.doneTask(task, success)
-        );
-
         this.needs.onOrderDone(order, success);
     }
     onOrderProcess(order: Order) {
@@ -193,8 +178,6 @@ export default class Human extends Entity {
         this.needs.onEnterDwelling(dwellingCell);
     }
     onOutDwelling(dwellingCell: DwellingCell) {
-        this.walkAround()
-        
         this.active = true;
         this.dwellingCell = null;
 
@@ -202,9 +185,13 @@ export default class Human extends Entity {
     }
 
     onTakeJob(cell: ProfessionCell, profession: SampleHumanProfession) {
+        this.professionCell = cell;
+        
         this.needs.onTakeJob(cell, profession);
     }
     onLostJob(cell: ProfessionCell, profession: SampleHumanProfession) {
+        this.professionCell = null;
+        
         this.needs.onLostJob(cell, profession);
     }
 
@@ -223,43 +210,34 @@ export default class Human extends Entity {
         return path;
     }
     walkAround(): void {
-        const tryGetPos: (i: number)=> IPoint | null = (iterations: number)=> {
-            const pos = Cells.getEmptyPos(
-                ()=> this.x + Random.int(-10, 10),
-                ()=> this.y + Random.int(-10, 10)
-            );
+        for (let i = 0; i < 10; i ++) {
+            if (Objects.campfire.distance(this.x, this.y) < 30) {
+                const pos = Cells.getEmptyPos(
+                    ()=> this.x + Random.int(-10, 10),
+                    ()=> this.y + Random.int(-10, 10)
+                );
 
-            if (iterations > 10)
-                return null;
-            if ((!pos || Objects.campfire.distance(pos.x, pos.y) > 30))
-                return tryGetPos(iterations + 1);
-
-            return pos;
+                if (pos && Objects.campfire.distance(pos.x, pos.y) < 30) {
+                    this.moveTo(pos.x, pos.y);
+                    break;
+                }
+            } else {
+                const pos = Objects.campfire.getRandomPos(30);
+                
+                if (pos) {
+                    this.moveTo(pos.x, pos.y);
+                    break;
+                }
+            }
         }
-
-        const pos = tryGetPos(0);
-        
-        if (pos)
-            this.moveTo(pos.x, pos.y);
-    }
-    updatePath(): boolean {
-        const curOrder = this.getCurOrder();
-        if (curOrder) {
-            const path = this.pathToOrder(curOrder);
-            if (path.length == 0)
-                Orders.doneOrder(curOrder, false);
-        }
-
-        return super.updatePath();
     }
     findProfession() {
-        if (!this.professions.is(NoneProfession)) return;
+        if (!this.professions.is(NoneProfession) || this.professionCell) return;
         
         const cell = Utils.sortNearestObjectTo(Cells.getCells<ProfessionCell>(ProfessionCell), this.x, this.y).filter(c=> c.getLetIn(this))[0];
-        console.log(cell);
         if (cell) {
             const task = new LearnProfessionTask(this, cell);
-
+            
             if (!this.getIsBusy(task)) {
                 this.tasks.addTask(task);
             }
@@ -283,9 +261,9 @@ export default class Human extends Entity {
     getCanTakeOrders(): boolean {
         return !this.professions.isLearning && !this.isTired && (this.tasks.current ? this.tasks.current.getCanTakeOrders(this) : true);
     }
-    getCurOrder(): Order | null {
+    getCurrentOrder(): Order | null {
         const curTask = this.tasks.current;
-        if (!curTask) return null;
+        if (!curTask || !(curTask instanceof OrderTask)) return null;
 
         return curTask.targetOrder;
     }
@@ -298,8 +276,5 @@ export default class Human extends Entity {
         }
         
         return this.tasks.current ? this.tasks.current.isWork : false;
-    }
-    getCurrentOrder(): Order | null {
-        return this.tasks.current ? this.tasks.current.targetOrder : null;
     }
 }

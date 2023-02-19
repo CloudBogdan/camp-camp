@@ -138,7 +138,7 @@ export default class CampfireCell extends Cell {
                 {
                     text: `больше (${ PlayerHelpers.showAdvancedStats ? "вкл" : "выкл" })`,
                     tooltip: `больше данных (${ PlayerHelpers.showAdvancedStats ? "вкл" : "выкл" })`,
-                    onClick: ()=> PlayerHelpers.showAdvancedStats = !PlayerHelpers.showAdvancedStats,
+                    onClick: ()=> PlayerHelpers.showAdvancedStats = !PlayerHelpers.showAdvancedStats
                 },
             ],
             "campfire/orders": [

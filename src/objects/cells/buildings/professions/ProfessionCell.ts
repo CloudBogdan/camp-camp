@@ -1,6 +1,9 @@
 import DwellingCell from "../DwellingCell";
 import NoneProfession from "../../../entities/human/professions/NoneProfession";
 import { OrderType } from "../../../../managers/orders/Order";
+import { HumanTaskType } from "../../../entities/human/tasks/SampleHumanTask";
+import { Engine, Renderer } from "../../../../engine";
+import Palette from "../../../../utils/Palette";
 
 export default class ProfessionCell extends DwellingCell {
     owner: Human | null = null;
@@ -12,36 +15,25 @@ export default class ProfessionCell extends DwellingCell {
     
     destroy(): void {
         super.destroy();
-        this.dismiss();
+        this.dismissWorker();
     }
     
-    stopLearning(human: Human): void {
-        human.professions.stopLearning();
-    }
-    enter(human: Human): boolean {
-        const result = super.enter(human)
-        
-        return result && this.learnProfession(human);
-    }
     own(human: Human): boolean {
         if (this.owner) return false;
         
         this.owner = human;
+        human.professionCell = this;
         return true;
     }
-    learnProfession(human: Human): boolean {
-        const ProfessionClass = this.getProfessionClass();
-        if (human.professions.is(ProfessionClass)) return false;
-
-        human.professions.learn(new ProfessionClass()).then(profession=> {
-            this.worker = human;
-            this.release(human);
-            human.onTakeJob(this, profession);
-        });
+    hireWorker(human: Human) {
+        const profession = new (this.getProfessionClass());
         
-        return true;
+        this.worker = human;
+        this.worker.professions.isLearning = false;
+        this.worker.professions.set(profession);
+        this.worker.onTakeJob(this, profession);
     }
-    dismiss() {
+    dismissWorker() {
         if (this.worker) {
             this.worker.onLostJob(this, this.worker.professions.current);
             this.worker.professions.set(new NoneProfession());
@@ -54,13 +46,20 @@ export default class ProfessionCell extends DwellingCell {
     onTakeOrder(order: Order): void {
         if (order.equals([OrderType.BREAK, OrderType.UPGRADE])) {
             for (const human of this.humans) {
-                this.stopLearning(human);
+                human.tasks.cancelTasksByType(HumanTaskType.LEARN_PROFESSION);
             }
         }
         
         super.onTakeOrder(order);
     }
 
+    draw(): void {
+        super.draw();
+
+        if (this.owner && Engine.isDebug)
+            Renderer.rect(this.x, this.y, 2, 2, Palette.BLUE);
+    }
+    
     //
     getIsLearning(): boolean {
         return this.humans[0] ? this.humans[0].professions.isLearning : false;
@@ -69,7 +68,7 @@ export default class ProfessionCell extends DwellingCell {
         return [
             {
                 text: "уволить",
-                onClick: ()=> this.dismiss(),
+                onClick: ()=> this.dismissWorker(),
                 visible: ()=> !!this.worker && !this.getIsLearning(),
                 blur: true,
             },

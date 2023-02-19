@@ -1,5 +1,5 @@
 export default class Config {
-    static readonly IS_DEV: boolean = import.meta.env.DEV;
+    static readonly IS_DEV: boolean = !import.meta.env.DEV;
 
     static readonly CANVAS_WIDTH: number = 208;
     static readonly CANVAS_HEIGHT: number = 136;
@@ -14,17 +14,19 @@ export default class Config {
         return this.WORLD_SIZE / (this.NAV_GRID_SIZE / this.GRID_SIZE);
     }
 
-    static readonly TIME_SPEED: number = this.IS_DEV ? (2) : (1);
+    static readonly TIME_SPEED: number = this.IS_DEV ? (10) : (1);
     static readonly SUCCESS_CHANCE_MUL: number = this.IS_DEV ? (2) : (1);
 
-    static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (4) : (4);
-    static readonly HUMAN_STUDY_SECS_DURATION: number = this.IS_DEV ? (10) : (30);
+    static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (1) : (4);
+    static readonly HUMAN_STUDY_DURATION: number = this.IS_DEV ? (600) : (1800);
     static readonly HUMAN_EAT_DURATION: number = 180;
-    static readonly TAKE_TASK_SECS_DELAY: number = .5;
 
     static readonly FOOD_SATURATION: number = 5;
 
     static readonly FONT_SHEET_WIDTH: number = 78;
     static readonly CHAR_WIDTH: number = 6;
     static readonly CHAR_HEIGHT: number = 6;
+
+    //
+    static readonly LOG_TASKS: boolean = this.IS_DEV && true;
 }

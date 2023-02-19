@@ -74,7 +74,8 @@ export default class Cells {
             for (let cx = 0; cx < cellWidth; cx ++) {
                 const cell = this.getCellAt(x + cx*Config.GRID_SIZE, y + cy*Config.GRID_SIZE);
 
-                if (cell && !cell.destroyed) return false;
+                if (cell)
+                    if (!cell.destroyed || cell.getIsSolid()) return false;
             }
         }
         
@@ -84,22 +85,17 @@ export default class Cells {
         return this.cellsGroup.children.filter(cell=> cell instanceof cellClass) as T[];
     }
     static getEmptyPos(xCallback: ()=> number, yCallback: ()=> number): IPoint | null {
-        const tryGetPos: (i: number)=> IPoint | null = (iteration: number)=> {
+        for (let i = 0; i < 10; i ++) {
             const x = xCallback();
             const y = yCallback();
             const isEmpty = this.isEmptyAt(x, y);
-
-            if (iteration > 10)
-                return null
             
-            if ((!isEmpty || x >= Screen.width || x < 0 || y >= Screen.height || y < 0)) {
-                return tryGetPos(iteration + 1);
+            if (isEmpty && x < Screen.width && x >= 0 && y < Screen.height && y >= 0) {
+                return { x, y };
             }
-
-            return { x, y };
         }
 
-        return tryGetPos(0);
+        return null;
     }
     static getNearestHousesTo(x: number, y: number, human?: Human): HouseCell[] {
         const houses = Cells.getCells<HouseCell>(HouseCell).filter(house=> {

@@ -28,6 +28,10 @@ export default class SaturationNeed extends SampleHumanNeed {
                 this.eatTaskCooldownTimer.start();
             }
         }
+
+        if (this.level < .3) {
+            human.happiness.value -= 1 / 60;
+        }
     }
 
     orderDone(human: Human, order: Order) {

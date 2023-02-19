@@ -16,6 +16,12 @@ export default class RestNeed extends SampleHumanNeed {
         } else {
             this.cooldownTimer.start();
         }
+
+        if (this.level < .5) {
+            human.happiness.value -= 1 / 200;
+        } else if (this.level > .9) {
+            human.happiness.value += 1 / 300;
+        }
     }
     
     orderDone(human: Human, order: Order, remove: number=10) {
