@@ -1,5 +1,5 @@
 export default class Config {
-    static readonly IS_DEV: boolean = !import.meta.env.DEV;
+    static readonly IS_DEV: boolean = import.meta.env.DEV;
 
     static readonly CANVAS_WIDTH: number = 208;
     static readonly CANVAS_HEIGHT: number = 136;
