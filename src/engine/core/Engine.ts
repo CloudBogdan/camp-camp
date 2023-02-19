@@ -76,7 +76,6 @@ export class Engine {
         })
 
         let lastTime = Date.now();
-        
         const loop = ()=> {
             requestAnimationFrame(loop);
             
