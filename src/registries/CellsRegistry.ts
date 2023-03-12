@@ -4,9 +4,12 @@ import BuilderCell from "../objects/cells/buildings/professions/BuilderCell";
 import GardenerCell from "../objects/cells/buildings/professions/GardenerCell";
 import MinerCell from "../objects/cells/buildings/professions/MinerCell";
 import StatueCell from "../objects/cells/buildings/StatueCell";
+import FarmlandCell from "../objects/cells/flora/FarmlandCell";
+import WheatCell from "../objects/cells/flora/food/WheatCell";
 import GrassCell from "../objects/cells/flora/GrassCell";
 import StoneCell from "../objects/cells/flora/StoneCell";
 import AppleTreeCell from "../objects/cells/flora/trees/AppleTreeCell";
+import SaplingCell from "../objects/cells/flora/trees/SaplingCell";
 import TreeCell from "../objects/cells/flora/trees/TreeCell";
 
 type CellCallback = ()=> Cell
@@ -29,6 +32,9 @@ export default class CellsRegistry {
         this.registerCell(()=> new StoneCell());
         this.registerCell(()=> new TreeCell());
         this.registerCell(()=> new AppleTreeCell());
+        this.registerCell(()=> new WheatCell());
+        this.registerCell(()=> new SaplingCell(new AppleTreeCell()), "apple-tree-sapling");
+        this.registerCell(()=> new SaplingCell(new TreeCell()), "tree-sapling");
         this.registerCell(()=> new GrassCell());
     }
 
@@ -46,8 +52,8 @@ export default class CellsRegistry {
     }
     
     //
-    static registerCell(cellCallback: CellCallback) {
+    static registerCell(cellCallback: CellCallback, name?: string) {
         const cell = cellCallback();
-        this.registeredCells[cell.name] = cellCallback;
+        this.registeredCells[name || cell.name] = cellCallback;
     }
 }

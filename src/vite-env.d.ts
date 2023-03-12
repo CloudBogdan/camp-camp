@@ -26,6 +26,7 @@ declare global {
     type SampleHumanTask = TSampleHumanTask;
     type HumanTaskType = THumanTaskType;
     type Cell = TCell;
+    type TypeofCell = typeof TCell;
     type Order = TOrder;
     type OrderType = TOrderType;
     type GameGui = TGameGui;

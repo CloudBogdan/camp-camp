@@ -16,7 +16,7 @@ export default class GameGui {
     }
     static draw() {
         if (Config.IS_DEV) {
-            if (Engine.clock.time % 20 == 0)
+            if (Engine.every(20))
                 this.fps = Engine.clock.fps;
             Renderer.text(Math.floor(this.fps).toString(), 0, 0);
         }

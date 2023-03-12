@@ -1,7 +1,7 @@
 import { OrderCategory, OrderType } from "../../../../managers/orders/Order";
 
 export interface IProfessionValues {
-    [key: number]: number
+    [key: string]: number
 }
 
 export default class SampleHumanProfession {

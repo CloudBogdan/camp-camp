@@ -12,7 +12,7 @@ export default class OrdersMenu extends Menu {
 
         const regCells = CellsRegistry.getCellsCallbackArray();
 
-        const buttons = regCells.map<IMenuButton | null>(cellCallback=> {
+        const buildButtons = regCells.map<IMenuButton | null>(cellCallback=> {
             const cell = cellCallback();
             const icon = cell.getPreviewIcon();
             if (!cell.canBeBuilt) return null;
@@ -31,10 +31,30 @@ export default class OrdersMenu extends Menu {
                 blur: true
             }
         }).filter(Boolean) as IMenuButton[];
+        const plantButtons = regCells.map<IMenuButton | null>(cellCallback=> {
+            const cell = cellCallback();
+            const icon = cell.getPreviewIcon();
+            if (!cell.canBePlanted) return null;
+            
+            return {
+                text: cell.getDisplayName(),
+                sprite: icon.name,
+                spriteSX: icon.sliceX,
+                spriteSY: icon.sliceY,
+                onClick: ()=> Cells.plantCell(cellCallback()),
+                onEnter: ()=> this.currentBuilding = cell,
+                onOut: ()=> this.currentBuilding = null,
+                disabled: ()=> !Cells.getCanBuildCell(cell),
+                cost: cell.getBuildCost(),
+                building: true,
+                blur: true
+            }
+        }).filter(Boolean) as IMenuButton[];
         
         this.tabs = {
             "orders": [],
-            "build": buttons,
+            "build": buildButtons,
+            "plant": plantButtons,
             "place": regCells.map<IMenuButton | null>(cellCallback=> {
                 const cell = cellCallback();
                 const icon = cell.getPreviewIcon();

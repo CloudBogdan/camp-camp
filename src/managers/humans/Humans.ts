@@ -7,6 +7,8 @@ import Orders from "../orders/Orders";
 import PlayerHelpers from "../PlayerHelpers";
 
 export default class Humans {
+    static started = false;
+
     static humansGroup = new Group<Human>();
     static happinessLevel: number = 1;
     static saturationLevel: number = 1;
@@ -56,9 +58,13 @@ export default class Humans {
     
     //
     static start() {
+        if (this.started) return;
+        
         Orders.onChanged.listen(params=> {
             this.onOrdersChanged(params.order);
-        });
+        }, "humans");
+
+        this.started = true;
     }
     static update() {
         this.humansGroup.update();
@@ -116,6 +122,12 @@ export default class Humans {
             if (PlayerHelpers.highlightHumans ? Engine.time % 40 < 20 : true)
                 human.draw();
         }
+    }
+    static destroy() {
+        this.started = false;
+        this.humansGroup.children = [];
+
+        Orders.onChanged.unlisten("humans");
     }
 
     //

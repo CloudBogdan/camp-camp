@@ -5,6 +5,8 @@ import { OrderType } from "./orders/Order";
 import Orders from "./orders/Orders";
 
 export default class PlayerHelpers {
+    static started = false;
+    
     static highlightHumans: boolean = false;
     static highlightOrders: boolean = false;
     static highlightStatName: string | null = null;
@@ -16,7 +18,11 @@ export default class PlayerHelpers {
     static orderImage: HTMLImageElement;
     
     static start() {
+        if (this.started) return;
+        
         this.orderImage = Assets.getImage("order")!;
+
+        this.started = true;
     }
     static draw() {
         if (this.highlightOrders) {
@@ -37,6 +43,8 @@ export default class PlayerHelpers {
                     sx = 32;
                 else if (order.type == OrderType.UPGRADE)
                     sx = 40;
+                else if (order.type == OrderType.PLANT)
+                    sx = 48;
                 
                 Renderer.context.globalAlpha = order.active ? (Engine.time % 60 < 40 ? 1 : 0) : 1;
                     

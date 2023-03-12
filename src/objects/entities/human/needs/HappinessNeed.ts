@@ -1,4 +1,3 @@
-import ProfessionCell from "../../../cells/buildings/professions/ProfessionCell";
 import SampleHumanNeed from "./SampleHumanNeed";
 
 export default class HappinessNeed extends SampleHumanNeed {

@@ -1,6 +1,5 @@
 import Config from "../../../../utils/Config";
 import ProfessionCell from "../../../cells/buildings/professions/ProfessionCell";
-import Human from "../Human";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";
 
 export default class LearnProfessionTask extends SampleHumanTask {

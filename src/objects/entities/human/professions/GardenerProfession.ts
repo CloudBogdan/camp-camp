@@ -6,7 +6,7 @@ export default class GardenerProfession extends SampleHumanProfession {
     constructor() {
         super();
         
-        this.priorityOrders = [OrderType.CHOP];
+        this.priorityOrders = [OrderType.CHOP, OrderType.HARVEST, OrderType.PLANT];
         this.color = Palette.RED;
         this.setMultiplier({
             [OrderType.CHOP]: .6,

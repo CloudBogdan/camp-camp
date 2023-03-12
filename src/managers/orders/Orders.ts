@@ -1,10 +1,7 @@
 import { Trigger } from "../../engine";
 
-import OrderParticle from "../../objects/particles/OrderParticle";
 import Pathfinding from "../../utils/Pathfinding";
 import Utils from "../../utils/Utils";
-import Humans from "../humans/Humans";
-import Particles from "../Particles";
 
 export enum OrderChangeType {
     ADDED,
@@ -23,21 +20,13 @@ export default class Orders {
     }
     
     //
-    static addOrder(order: Order): Order | null {
-        const successPaths = Humans.humansGroup.children.map(human=> {
-            return human.pathToOrder(order).length > 0;
-        }).filter(Boolean);
+    static addOrder(order: Order): Order {
+        order.onAdd();
         
-        if (successPaths.length > 0) {
-            order.onAdd();
-            
-            this.orders.splice(0, 0, order);
-            this.onChanged.notify({ order, type: OrderChangeType.ADDED });
-            
-            return order;
-        }
-
-        return null;
+        this.orders.splice(0, 0, order);
+        this.onChanged.notify({ order, type: OrderChangeType.ADDED });
+        
+        return order;
     }
     static sortNearestOrdersTo(x: number, y: number): Order[] {
         return this.orders.sort((a, b)=> a.targetCell.distance(x, y) - b.targetCell.distance(x, y));

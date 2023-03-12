@@ -1,14 +1,16 @@
 export class Stage {
-    static prestart() {
-
-    }
-    static start() {
+    started: boolean = false;
+    
+    start() {
         
     }
-    static update() {
+    update() {
 
     }
-    static draw() {
+    draw() {
         
+    }
+    destroy() {
+        this.started = false;
     }
 }

@@ -1,6 +1,7 @@
 import { Random } from "../../../../engine";
 import Generator from "../../../../managers/Generator";
 import Inventory, { ICost } from "../../../../managers/Inventory";
+import { OrderType } from "../../../../managers/orders/Order";
 import Utils from "../../../../utils/Utils";
 import TreePlantCell from "./TreePlantCell";
 
@@ -8,10 +9,14 @@ export default class AppleTreeCell extends TreePlantCell {
     constructor() {
         super("apple-tree");
         
+        this.allowHarvestOrder = true;
+        this.ordersSpeed = {
+            ...this.ordersSpeed,
+            [OrderType.PLANT]: 30
+        }
+        
         this.animation.frames = [0, 1];
         this.animation.paused = true;
-
-        this.allowHarvestOrder = true;
     }
 
     create(): void {
@@ -46,6 +51,18 @@ export default class AppleTreeCell extends TreePlantCell {
     }
 
     //
+    getBuildCost(): ICost {
+        return {
+            "wood": {
+                count: 5,
+                remove: true
+            },
+            "food": {
+                count: 5,
+                remove: true
+            }
+        }
+    }
     getHarvestCost(): ICost {
         return {
             "food": {

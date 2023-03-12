@@ -4,17 +4,21 @@ import PlantCell from "./PlantCell";
 import Cells from "../../../managers/Cells";
 import TreeCell from "./trees/TreeCell";
 import { OrderType } from "../../../managers/orders/Order";
+import { ICost } from "../../../managers/Inventory";
 
 export default class GrassCell extends PlantCell {
     constructor() {
         super("grass");
         
-        this.animation.paused = true;
-
+        this.canBePlanted = true;
+        this.allowClearOrder = true;
         this.ordersSpeed = {
             ...this.ordersSpeed,
+            [OrderType.PLANT]: 4,
             [OrderType.CLEAR]: 4
         }
+        
+        this.animation.paused = true;
     }
 
     create(): void {
@@ -29,27 +33,24 @@ export default class GrassCell extends PlantCell {
     }
 
     //
+    getBuildCost(): ICost {
+        return {
+            "wood": {
+                count: 1,
+                remove: true
+            }
+        }
+    }
     getDisplayName(): string {
         return "трава";
     }
     getIsSolid(): boolean {
         return false;
     }
-    getOrdersMenuTab(menu: OrdersMenu): IMenuButton[] {
-        return [
-            {
-                text: "убрать",
-                onClick: ()=> this.addOrder(OrderType.CLEAR),
-                visible: ()=> this.getOrderType() == null,
-                blur: true
-            },
-            ...super.getOrdersMenuTab(menu)
-        ]
-    }
     getGenerationRule(noiseX: number, noiseY: number): boolean {
-        const value = Generator.simplex(noiseX/2, noiseY/2);
-        const randomize = Generator.simplex(noiseX*4, noiseY*4);
+        const value = Generator.simplex(noiseX/4, noiseY/4);
+        const randomize = Generator.simplex(noiseX, noiseY);
         
-        return value < .2;
+        return value < .4 || randomize < .2;
     }
 }

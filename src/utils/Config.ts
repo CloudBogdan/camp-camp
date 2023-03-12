@@ -14,7 +14,7 @@ export default class Config {
         return this.WORLD_SIZE / (this.NAV_GRID_SIZE / this.GRID_SIZE);
     }
 
-    static readonly TIME_SPEED: number = this.IS_DEV ? (10) : (1);
+    static readonly TIME_SPEED: number = this.IS_DEV ? (1) : (1);
     static readonly SUCCESS_CHANCE_MUL: number = this.IS_DEV ? (2) : (1);
 
     static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (1) : (4);

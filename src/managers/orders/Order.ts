@@ -3,14 +3,16 @@ import OrderParticle from "../../objects/particles/OrderParticle";
 import Particles from "../Particles";
 
 export enum OrderType {
-    BUILD,
-    UPGRADE,
+    BUILD = "build",
+    UPGRADE = "upgrade",
+    PLANT = "plant",
 
-    MINE,
-    CHOP,
-    BREAK,
-    CLEAR,
-    HARVEST,
+    MINE = "mine",
+    CHOP = "chop",
+    HARVEST = "harvest",
+
+    BREAK = "break",
+    CLEAR = "clear",
 }
 export enum OrderCategory {
     SIMPLE,

@@ -8,7 +8,7 @@ import redFont_png from "../../assets/images/gui/red-font.png";
 import greenFont_png from "../../assets/images/gui/green-font.png";
 import grayFont_png from "../../assets/images/gui/gray-font.png";
 
-export type FontColor = "white" | "dark-brown" | "black" | "red" | "gray" | "green";
+export type FontColor = "white" | "dark-brown" | "black" | "red" | "gray" | "green" | "transparent";
 export type TextAlign = "center" | "right" | "left";
 interface IFontSettings {
     [key: string]: {
@@ -37,7 +37,7 @@ const FONT_SETTINGS: IFontSettings = {
     "ж": { width: 6 },
     "щ": { width: 7, offsetX: 1 },
     "ш": { width: 6 },
-    "ц": { width: 6 },
+    "ц": { width: 5 },
     "ю": { width: 6 },
 }
 
@@ -113,32 +113,35 @@ export class Renderer {
         );
     }
     static text(text: string, x: number, y: number, color: FontColor="white", align: TextAlign="left"): number {
-        const font = Assets.getImage(`${ color }-font`);
-        if (!font) return 0;
+        const font = Assets.getImage(`${ color }-font`)!;
+        if (!font && color != "transparent") return 0;
 
         const textWidth = this.calculateTextWidth(text);
-        let textOffsetX = 0;
 
-        if (align == "center") {
-            textOffsetX = Math.floor(textWidth/2);
-        } else if (align == "right") {
-            textOffsetX = textWidth;
-        }
+        if (color != "transparent") {
+            let textOffsetX = 0;
 
-        for (let i = 0; i < text.length; i ++) {
-            const char = text[i];
-            const settings = FONT_SETTINGS[char];
-            const offsetX = settings?.offsetX || 0;
-            const offsetY = settings?.offsetY || 0;
-            
-            const lastWidth = this.calculateTextWidth(text.slice(0, i));
+            if (align == "center") {
+                textOffsetX = Math.floor(textWidth/2);
+            } else if (align == "right") {
+                textOffsetX = textWidth;
+            }
 
-            this.char(
-                char,
-                x + lastWidth + offsetX - textOffsetX,
-                y + offsetY,
-                font
-            );
+            for (let i = 0; i < text.length; i ++) {
+                const char = text[i];
+                const settings = FONT_SETTINGS[char];
+                const offsetX = settings?.offsetX || 0;
+                const offsetY = settings?.offsetY || 0;
+                
+                const lastWidth = this.calculateTextWidth(text.slice(0, i));
+
+                this.char(
+                    char,
+                    x + lastWidth + offsetX - textOffsetX,
+                    y + offsetY,
+                    font
+                );
+            }
         }
 
         return textWidth;

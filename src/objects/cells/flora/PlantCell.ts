@@ -2,13 +2,15 @@ import Cell from "../Cell";
 import { ICost } from "../../../managers/Inventory";
 import Animations from "../../../utils/Animations";
 import { Engine } from "../../../engine";
-import { OrderType } from "../../../managers/orders/Order";
+import Order, { OrderType } from "../../../managers/orders/Order";
 
 export default class PlantCell extends Cell {
     grown: boolean = false;
     
     growTimer = Engine.createTimer();
     allowHarvestOrder: boolean = false;
+    allowClearOrder: boolean = false;
+    allowHarvestAnim: boolean = true;
     
     constructor(name: string) {
         super(name);
@@ -18,12 +20,14 @@ export default class PlantCell extends Cell {
         super.create();
 
         this.growTimer.start(this.getGrowDuration()*2);
-        this.animateScale(0, 0, true);
+
+        if (this.allowCreatingAnim)
+            this.animateScale(0, 0, true);
     }
     update(): void {
         super.update();
 
-        if (this.growTimer.justFinished) {
+        if (!this.destroyed && this.growTimer.finished && !this.grown) {
             this.grown = true;
             this.onGrown();
         }
@@ -49,14 +53,22 @@ export default class PlantCell extends Cell {
     }
     onOrderDone(order: Order, success: boolean): void {
         super.onOrderDone(order, success);
-
+        
+        this.growTimer.resume();
         if (order.type == OrderType.HARVEST)
             this.harvest(success);
     }
     onOrderAdded(order: Order): void {
         super.onOrderAdded(order);
 
-        Animations.shaking(this);
+        this.growTimer.pause();
+        if (this.allowHarvestAnim)
+            Animations.shaking(this);
+    }
+    onOrderCancel(order: Order): void {
+        super.onOrderCancel(order);
+
+        this.growTimer.resume();
     }
     
     //
@@ -77,6 +89,13 @@ export default class PlantCell extends Cell {
                 visible: ()=> this.getOrderType() == null && this.allowHarvestOrder,
                 disabled: ()=> !this.getCanBeHarvested(),
                 cost: this.getHarvestCost(),
+                blur: true
+            },
+            {
+                text: "убрать",
+                onClick: ()=> this.addOrder(OrderType.CLEAR),
+                visible: ()=> this.getOrderType() == null && this.allowClearOrder,
+                cost: this.getBreakCost(),
                 blur: true
             },
             ...super.getOrdersMenuTab(menu)

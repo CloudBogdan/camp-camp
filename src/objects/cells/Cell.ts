@@ -11,7 +11,7 @@ import Screen from "../../managers/Screen";
 import Order, { OrderCategory, OrderType } from "../../managers/orders/Order";
 
 export interface ICellValues {
-    [key: number]: number
+    [key: string]: number
 }
 
 export default class Cell extends Sprite {
@@ -22,18 +22,23 @@ export default class Cell extends Sprite {
     cellsWidth: number = 1;
     cellsHeight: number = 1;
     animatedScale: number = 0;
+    allowCreatingAnim: boolean = true;
 
     orderCategory: OrderCategory = OrderCategory.SIMPLE;
     canBeBuilt: boolean = false;
+    canBePlanted: boolean = false;
 
     ordersSpeed: ICellValues = {
         [OrderType.BUILD]: 40,
         [OrderType.CHOP]: 50,
-        [OrderType.BREAK]: 30,
-        [OrderType.UPGRADE]: 40,
-        [OrderType.CLEAR]: 8,
+        [OrderType.PLANT]: 10,
+
         [OrderType.MINE]: 60,
+        [OrderType.UPGRADE]: 40,
         [OrderType.HARVEST]: 10,
+        
+        [OrderType.CLEAR]: 8,
+        [OrderType.BREAK]: 30,
     };
     
     constructor(name: string) {
@@ -198,18 +203,22 @@ export default class Cell extends Sprite {
     getNamePrefix(): string {
         if (!this.order) return "";
 
+        const percent = Utils.percent(this.order.progress);
+
         if (this.getOrderType() == OrderType.BREAK)
-            return `(разобрать ${ Utils.percent(this.order.progress) })`;
+            return `(разобрать ${ percent })`;
         else if (this.getOrderType() == OrderType.UPGRADE)
-            return `(улучшить ${ Utils.percent(this.order.progress) })`;
+            return `(улучшить ${ percent })`;
         else if (this.getOrderType() == OrderType.CLEAR)
-            return `(убрать ${ Utils.percent(this.order.progress) })`;
+            return `(убрать ${ percent })`;
         else if (this.getOrderType() == OrderType.CHOP)
-            return `(срубить ${ Utils.percent(this.order.progress) })`;
+            return `(срубить ${ percent })`;
         else if (this.getOrderType() == OrderType.MINE)
-            return `(добыть ${ Utils.percent(this.order.progress) })`;
+            return `(добыть ${ percent })`;
         else if (this.getOrderType() == OrderType.HARVEST)
-            return `(собрать ${ Utils.percent(this.order.progress) })`;
+            return `(собрать ${ percent })`;
+        else if (this.getOrderType() == OrderType.PLANT)
+            return `(посадить ${ percent })`;
 
         return "";
     }

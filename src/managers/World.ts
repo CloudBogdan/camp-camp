@@ -81,4 +81,9 @@ export default class World {
 
         Renderer.restore();
     }
+    static destroy() {
+        Humans.destroy();
+        Cells.destroy();
+        Generator.destroy();
+    }
 }

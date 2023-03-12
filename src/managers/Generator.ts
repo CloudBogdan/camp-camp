@@ -6,17 +6,22 @@ import CellsRegistry from "../registries/CellsRegistry";
 import Cells from "./Cells";
 
 export default class Generator {
+    static started = false;
     static seed: number = 0;
     
     static start() {
+        if (this.started) return;
+        
         this.seed = Date.now();
 
-        if (Config.IS_DEV) {
-            this.seed = 1672760807702;
-            console.log(this.seed);
-        }
+        // if (Config.IS_DEV) {
+        //     this.seed = 1672760807702;
+        //     console.log(this.seed);
+        // }
         
         Noise.seed(this.seed);
+
+        this.started = false;
     }
 
     static generate() {
@@ -38,6 +43,9 @@ export default class Generator {
                 }
             }
         }
+    }
+    static destroy() {
+        this.started = false;
     }
 
     //

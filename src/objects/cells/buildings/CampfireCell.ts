@@ -1,9 +1,10 @@
-import { Random } from "../../../engine";
+import { Engine, Random } from "../../../engine";
 import Cells from "../../../managers/Cells";
 import Humans from "../../../managers/humans/Humans";
 import Inventory from "../../../managers/Inventory";
 import Orders from "../../../managers/orders/Orders";
 import PlayerHelpers from "../../../managers/PlayerHelpers";
+import TitleScreenStage from "../../../stages/TitleScreenStage";
 import Config from "../../../utils/Config";
 import { IPoint } from "../../../utils/types";
 import Utils from "../../../utils/Utils";
@@ -72,6 +73,12 @@ export default class CampfireCell extends Cell {
             {
                 text: `статистика`,
                 tab: "campfire/stats"
+            },
+
+            {
+                text: `<menu>`,
+                visible: ()=> Config.IS_DEV,
+                onClick: ()=> Engine.gotoStage(TitleScreenStage)
             },
 
             ...super.getOrdersMenuTab(menu)

@@ -1,3 +1,5 @@
+import Config from "../../utils/Config";
+import Palette from "../../utils/Palette";
 import Utils from "../../utils/Utils";
 import { Stage } from "../components/Stage";
 import Timer from "../components/Timer";
@@ -12,11 +14,13 @@ interface IEngineClock {
 }
 
 export class Engine {
+    static inited: boolean = false;
     static started: boolean = false;
     static isDebug: boolean = false;
 
+    static nextStageClass: typeof Stage | null = null;
+    static currentStage: Stage; 
     static focusedMenu: Menu | null = null;
-    static currentStage: typeof Stage; 
     static clock: IEngineClock = {
         time: 0,
         fps: 60,
@@ -24,6 +28,9 @@ export class Engine {
     };
     
     static timers: Timer[] = [];
+    
+    static fadeOutStageTimer = this.createTimer(20);
+    static fadeInStageTimer = this.createTimer(20);
     
     static prestart: ()=> void = ()=> {};
     static start: ()=> void = ()=> {};
@@ -33,16 +40,15 @@ export class Engine {
     //
     private static _prestart() {
         this.prestart();
-        
-        if (this.currentStage)
-            this.currentStage.prestart();
     }
     private static _start() {
         this.started = true;
 
+        this.fadeInStageTimer.reversed = true;
+        
         this.start();
         
-        if (this.currentStage)
+        if (this.currentStage && !this.currentStage.started)
             this.currentStage.start();
     }
     private static _update() {
@@ -52,14 +58,35 @@ export class Engine {
 
         this.update();
         
+        if (this.nextStageClass && this.fadeOutStageTimer.justFinished) {
+            this.fadeInStageTimer.start();
+            this.gotoStage(this.nextStageClass);
+        }
+
         if (this.currentStage)
             this.currentStage.update();
     }
     private static _draw() {
         this.draw();
+
+        Renderer.background(Palette.BLACK);
         
         if (this.currentStage)
             this.currentStage.draw();
+
+        const rectSize = Math.floor(this.stageTransitionProgress * 16);
+
+        if (rectSize >= 1) {
+            for (let i = 0; i < Math.floor(this.width / 16); i ++) {
+                for (let j = 0; j < Math.floor(this.height / 16); j ++) {
+                    Renderer.rect(
+                        i * 16 + 8 - Math.floor(rectSize/2),
+                        j * 16 + 8 - Math.floor(rectSize/2),
+                        rectSize, rectSize, Palette.BLACK
+                    )
+                }
+            }
+        }
     }
 
     static init() {
@@ -67,7 +94,8 @@ export class Engine {
         Renderer.init();
         Keyboard.init();
 
-        console.log("%cSource code is here! :D\nhttps://github.com/CloudBogdan/little-colony", "color: orange; font-size: 18px");
+        if (!Config.IS_DEV)
+            console.log("%cSource code is here! :D\nhttps://github.com/CloudBogdan/camp-camp", "color: orange; font-size: 18px");
 
         this._prestart()
 
@@ -113,12 +141,31 @@ export class Engine {
             Keyboard.justPressed = false;
             Keyboard.pressedKeys = {};
         });
+
+        this.inited = true;
     }
 
     //
-    static gotoStage(stage: typeof Stage): typeof Stage {
+    static gotoStage(stageClass: typeof Stage) {
+        this.fadeOutStageTimer.stop();
+        this.nextStageClass = null;
+        
+        if (this.currentStage) {
+            this.currentStage.destroy();
+        }
+        
+        const stage = new stageClass();
+        
         this.currentStage = stage;
+        if (this.inited && !this.currentStage.started) {
+            this.currentStage.start();
+            this.currentStage.started = true;
+        }
         return stage;
+    }
+    static transitionToStage(stageClass: typeof Stage) {
+        this.fadeOutStageTimer.start();
+        this.nextStageClass = stageClass
     }
 
     static createTimer(duration?: number): Timer {
@@ -146,5 +193,8 @@ export class Engine {
     }
     static get time(): number {
         return this.clock.time;
+    }
+    static get stageTransitionProgress(): number {
+        return this.fadeOutStageTimer.progress + this.fadeInStageTimer.progress;
     }
 }

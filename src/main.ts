@@ -1,8 +1,7 @@
 import { Engine } from "./engine";
 import { Assets } from "./engine/core/Assets";
-import Game from "./Game";
+import TitleScreenStage from "./stages/TitleScreenStage";
 import Translate from "./managers/Translate";
-import CellsRegistry from "./registries/CellsRegistry";
 
 import cursor_png from "./assets/images/gui/cursor.png";
 import humanIcon_png from "./assets/images/gui/human-icon.png";
@@ -37,15 +36,21 @@ import layout2x1_png from "./assets/images/cells/layout-2x1.png";
 import scaffolding1x1_png from "./assets/images/cells/scaffolding-1x1.png";
 import scaffolding2x1_png from "./assets/images/cells/scaffolding-2x1.png";
 
+import farmland_png from "./assets/images/cells/farmland.png";
 import tree_png from "./assets/images/cells/tree.png";
 import appleTree_png from "./assets/images/cells/apple-tree.png";
 import grass_png from "./assets/images/cells/grass.png";
 import stone_png from "./assets/images/cells/stone.png";
+import sapling_png from "./assets/images/cells/sapling.png";
+import wheat_png from "./assets/images/cells/wheat.png";
 
 import leafParticle_png from "./assets/images/particles/leaf-particle.png";
 import fireParticle_png from "./assets/images/particles/fire-particle.png";
 import orderParticle_png from "./assets/images/particles/order-particle.png";
 import stoneParticle_png from "./assets/images/particles/stone-particle.png";
+
+import logo_png from "./assets/images/gui/logo.png";
+import GameStage from "./GameStage";
 
 Engine.prestart = ()=> {
     Assets.loadImage("cursor", cursor_png);
@@ -82,23 +87,23 @@ Engine.prestart = ()=> {
     Assets.loadImage("scaffolding-1x1", scaffolding1x1_png);
     Assets.loadImage("scaffolding-2x1", scaffolding2x1_png);
 
+    Assets.loadImage("farmland", farmland_png);
     Assets.loadImage("tree", tree_png);
     Assets.loadImage("apple-tree", appleTree_png);
     Assets.loadImage("grass", grass_png);
     Assets.loadImage("stone", stone_png);
+    Assets.loadImage("sapling", sapling_png);
+    Assets.loadImage("wheat", wheat_png);
 
     Assets.loadImage("leaf-particle", leafParticle_png);
     Assets.loadImage("fire-particle", fireParticle_png);
     Assets.loadImage("order-particle", orderParticle_png);
     Assets.loadImage("stone-particle", stoneParticle_png);
 
-    CellsRegistry.init();
+    Assets.loadImage("logo", logo_png);
+
     Translate.init();
 };
 
-Engine.start = ()=> Game.start();
-Engine.update = ()=> Game.update();
-Engine.draw = ()=> Game.draw();
-
+Engine.gotoStage(TitleScreenStage)
 Engine.init();
-// Engine.init(WelcomeStage);

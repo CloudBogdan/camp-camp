@@ -5,7 +5,7 @@ import Entity from "../Entity";
 import DwellingCell from "../../cells/buildings/DwellingCell";
 import HumanTasks from "./HumanTasks";
 import Utils from "../../../utils/Utils";
-import { IArrayPoint, IPoint } from "../../../utils/types";
+import { IArrayPoint } from "../../../utils/types";
 import Pathfinding from "../../../utils/Pathfinding";
 import Cells from "../../../managers/Cells";
 import ProfessionCell from "../../cells/buildings/professions/ProfessionCell";;

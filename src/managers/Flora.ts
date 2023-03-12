@@ -10,16 +10,25 @@ import Cells from "./Cells";
 import Screen from "./Screen";
 
 export default class Flora {
+    static started = false;
+    
     static growGrassDelayTimer = Engine.createTimer(this.getGrowGrassDelayDuration());
     static growTreeDelayTimer = Engine.createTimer(this.getGrowTreeDelayDuration());
     
     static start() {
+        if (this.started) return;
+        
         this.growGrassDelayTimer.start();
         this.growTreeDelayTimer.start();
+
+        this.started = true;
     }
     static update() {
         this.updateGrowGrass();
         this.updateGrowTree();
+    }
+    static destroy() {
+        
     }
 
     static updateGrowGrass() {

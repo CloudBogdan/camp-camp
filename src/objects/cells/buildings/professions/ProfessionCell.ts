@@ -2,8 +2,6 @@ import DwellingCell from "../DwellingCell";
 import NoneProfession from "../../../entities/human/professions/NoneProfession";
 import { OrderType } from "../../../../managers/orders/Order";
 import { HumanTaskType } from "../../../entities/human/tasks/SampleHumanTask";
-import { Engine, Renderer } from "../../../../engine";
-import Palette from "../../../../utils/Palette";
 
 export default class ProfessionCell extends DwellingCell {
     owner: Human | null = null;
@@ -51,13 +49,6 @@ export default class ProfessionCell extends DwellingCell {
         }
         
         super.onTakeOrder(order);
-    }
-
-    draw(): void {
-        super.draw();
-
-        if (this.owner && Engine.isDebug)
-            Renderer.rect(this.x, this.y, 2, 2, Palette.BLUE);
     }
     
     //

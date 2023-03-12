@@ -17,13 +17,13 @@ export default class Animations {
             }
         }))
     }
-    static scaleDown(sprite: Sprite, complete: ()=> void=()=> {}) {
+    static scaleDown(sprite: Sprite, complete: ()=> void=()=> {}, duration: number=500) {
         sprite.playTween(anime({
             targets: sprite,
             scaleX: 0,
             scaleY: 0,
             easing: "easeInCubic",
-            duration: 500,
+            duration,
             complete: ()=> {
                 complete();
             },

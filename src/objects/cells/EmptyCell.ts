@@ -15,6 +15,7 @@ export default class EmptyCell extends Cell {
     getOrdersMenuTab(menu: OrdersMenu): IMenuButton[] {
         return [
             { text: "строить", tab: "build" },
+            { text: "посадить", tab: "plant" },
             { text: "<place>", tab: "place", visible: ()=> Config.IS_DEV },
         ]
     }

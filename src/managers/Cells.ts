@@ -7,12 +7,14 @@ import HouseCell from "../objects/cells/buildings/HouseCell";
 import LayoutCell from "../objects/cells/buildings/LayoutCell";
 import Orders from "./orders/Orders";
 import Screen from "./Screen";
-import Cell from "../objects/cells/Cell";
 import Inventory from "./Inventory";
 import Order, { OrderType } from "./orders/Order";
 import Objects from "./Objects";
+import FarmlandCell from "../objects/cells/flora/FarmlandCell";
 
 export default class Cells {
+    static started = false;
+    
     static cellsGroup: Group<Cell> = new Group();
 
     static onChanged = new Trigger<Cell[]>("cells/on-changed");
@@ -48,6 +50,11 @@ export default class Cells {
 
         return cell;
     }
+    static destroyCell(cell: Cell) {
+        this.cellsGroup.destroy(cell);
+        this.onChanged.notify(this.cellsGroup.children);
+    }
+
     static buildCell(cell: Cell, x?: number, y?: number): Cell | null {
         x = Utils.safeValue(x, Objects.cursor.x)
         y = Utils.safeValue(y, Objects.cursor.y)
@@ -60,9 +67,17 @@ export default class Cells {
 
         return result;
     }
-    static destroyCell(cell: Cell) {
-        this.cellsGroup.destroy(cell);
-        this.onChanged.notify(this.cellsGroup.children);
+    static plantCell(cell: Cell, x?: number, y?: number): Cell | null {
+        x = Utils.safeValue(x, Objects.cursor.x)
+        y = Utils.safeValue(y, Objects.cursor.y)
+        
+        const farmlandCell = new FarmlandCell(cell);
+        const result = this.placeCell(farmlandCell, x, y);
+        if (result) {
+            Orders.addOrder(new Order(OrderType.PLANT, farmlandCell, cell.orderCategory));
+        }
+
+        return result;
     }
 
     //
@@ -74,14 +89,14 @@ export default class Cells {
             for (let cx = 0; cx < cellWidth; cx ++) {
                 const cell = this.getCellAt(x + cx*Config.GRID_SIZE, y + cy*Config.GRID_SIZE);
 
-                if (cell)
-                    if (!cell.destroyed || cell.getIsSolid()) return false;
+                if (cell && !cell.destroyed)
+                    return false;
             }
         }
         
         return true;
     }
-    static getCells<T extends Cell=Cell>(cellClass: typeof Cell=Cell): T[] {
+    static getCells<T extends Cell=Cell>(cellClass: TypeofCell): T[] {
         return this.cellsGroup.children.filter(cell=> cell instanceof cellClass) as T[];
     }
     static getEmptyPos(xCallback: ()=> number, yCallback: ()=> number): IPoint | null {
@@ -114,12 +129,18 @@ export default class Cells {
 
     //
     static start() {
-        
+        if (this.started) return;
+
+        this.started = true;
     }
     static update() {
         this.cellsGroup.update();
     }
     static draw() {
         this.cellsGroup.draw();
+    }
+    static destroy() {
+        this.started = false;
+        this.cellsGroup.children = [];
     }
 } 
