@@ -148,6 +148,27 @@ export default class Menu {
         if (Keyboard.justButton("esc")) {
             this.blur();
         }
+
+        // Hotkeys
+        if (Keyboard.justPressed) {
+            const digitKey = Object.keys(Keyboard.pressedKeys)[0];
+            
+            if (/[1-9]/gm.test(digitKey)) {
+                const button = curTabButtons[(+digitKey) - 1];
+                if (!button || (button.visible && !button.visible()) || (button.disabled && button.disabled())) return; 
+    
+                button.onClick && button.onClick();
+    
+                if (button.blur) {
+                    this.blur();
+                }
+                if (button.tab) {
+                    this.openTab(button.tab);
+                }
+                
+                Keyboard.reset()
+            }
+        }
     }
     draw() {
         const curTabButtons = this.getCurTabButtons();

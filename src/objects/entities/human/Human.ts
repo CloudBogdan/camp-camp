@@ -22,6 +22,7 @@ import WalkTask from "./tasks/WalkTask";
 import RestNeed from "./needs/RestNeed";
 import Objects from "../../../managers/Objects";
 import SampleHumanTask, { HumanTaskType } from "./tasks/SampleHumanTask";
+import Config from "../../../utils/Config";
 
 export enum HumanState {
     NORMAL,
@@ -67,10 +68,12 @@ export default class Human extends Entity {
     update(): void {
         super.update();
 
-        if (Keyboard.justKey("K"))
-            this.findProfession();
-        if (Keyboard.justKey("e"))
-            this.emotion.set(Random.item<Emotion>(["happy", "angry", "sad", "tired"]));
+        if (Config.IS_DEV) {
+            if (Keyboard.justKey("K"))
+                this.findProfession();
+            if (Keyboard.justKey("e"))
+                this.emotion.set(Random.item<Emotion>(["happy", "angry", "sad", "tired"]));
+        }
         
         this.emotion.update();
             

@@ -2,7 +2,7 @@ import { Engine, Random } from "../../../engine";
 import Generator from "../../../managers/Generator";
 import Inventory, { ICost } from "../../../managers/Inventory";
 import { OrderType } from "../../../managers/orders/Order";
-import Particles from "../../../managers/Particles";
+import Particles from "../../../managers/particles/Particles";
 import Utils from "../../../utils/Utils";
 import StoneParticle from "../../particles/StoneParticle";
 import Cell from "../Cell";
@@ -54,8 +54,8 @@ export default class StoneCell extends Cell {
         Particles.addParticles(
             ()=> new StoneParticle(),
             ()=> pos.x + Random.int(-1, 1),
-            ()=> pos.y + Random.int(-1, 1),
-            2
+            ()=> pos.y + 2 + Random.int(-1, 1),
+            3
         );
     }
     mineOrder() {

@@ -1,5 +1,6 @@
 import Config from "../../../../utils/Config";
 import ProfessionCell from "../../../cells/buildings/professions/ProfessionCell";
+import Human from "../Human";
 import SampleHumanTask, { HumanTaskType } from "./SampleHumanTask";
 
 export default class LearnProfessionTask extends SampleHumanTask {
@@ -27,6 +28,15 @@ export default class LearnProfessionTask extends SampleHumanTask {
         if (success && professionCell && professionCell instanceof ProfessionCell) {
             professionCell.hireWorker(human);
             professionCell.release(human);
+        }
+    }
+    onCancel(human: Human): void {
+        super.onCancel(human);
+
+        const professionCell = human.dwellingCell;
+        if (professionCell && professionCell instanceof ProfessionCell) {
+            human.professions.isLearning = false;
+            human.professionCell = null;
         }
     }
     executing(human: Human): void {

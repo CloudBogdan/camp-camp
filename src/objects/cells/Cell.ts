@@ -195,6 +195,12 @@ export default class Cell extends Sprite {
                 visible: ()=> Config.IS_DEV,
                 blur: true
             },
+            {
+                text: "<log>",
+                onClick: ()=> console.log(this),
+                visible: ()=> Config.IS_DEV,
+                blur: true
+            },
         ]
     }
     getMenuTabs(menu: OrdersMenu): IMenuTabs {

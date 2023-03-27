@@ -20,7 +20,7 @@ export default class GameStage extends Stage {
     update() {
         super.update();
         
-        if (Keyboard.justKey("H") && Config.IS_DEV)
+        if (Keyboard.justKey("I") && Config.IS_DEV)
             Engine.isDebug = !Engine.isDebug;
         
         Screen.update();

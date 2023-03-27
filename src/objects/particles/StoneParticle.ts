@@ -1,20 +1,19 @@
 import { Random } from "../../engine";
-import { Particle } from "../../managers/Particles";
+import { Particle } from "../../managers/particles/Particle";
 
 export default class StoneParticle extends Particle {
     constructor() {
-        super("stone-particle");
+        super("stone-particle", 0);
 
-        this.velocity.x = Random.float(-.8, .8);
-        this.velocity.y = -1.2;
-        this.velocityMultiplier.x = 1;
-        this.velocityMultiplier.y = 1;
-
-        this.acceleration.y = .06;
+        this.animation.paused = true;
+        
+        this.velocity.x = Random.float(-2, 2);
+        this.velocity.y = Random.float(-2, 2);
+        this.velocityMultiplier.x = .88;
+        this.velocityMultiplier.y = .88;
 
         this.flipX = this.velocity.x < 0;
         
-        this.scaleDownSpeed = .02;
-        this.rotateSpeed = 2;
+        this.scaleDownSpeed = .01;
     }
 }

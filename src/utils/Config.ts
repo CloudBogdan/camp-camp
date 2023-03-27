@@ -14,10 +14,12 @@ export default class Config {
         return this.WORLD_SIZE / (this.NAV_GRID_SIZE / this.GRID_SIZE);
     }
 
-    static readonly TIME_SPEED: number = this.IS_DEV ? (1) : (1);
+    static readonly TIME_SPEED: number = this.IS_DEV ? (2) : (1);
     static readonly SUCCESS_CHANCE_MUL: number = this.IS_DEV ? (2) : (1);
-
-    static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (1) : (4);
+    
+    static readonly DAY_DURATION: number = 7200 // 2 minutes
+    static readonly MIN_FREE_ROOMS: number = 4
+    static readonly STARTER_HUMANS_COUNT: number = this.IS_DEV ? (1) : (2);
     static readonly HUMAN_STUDY_DURATION: number = this.IS_DEV ? (600) : (1800);
     static readonly HUMAN_EAT_DURATION: number = 180;
 
@@ -28,5 +30,5 @@ export default class Config {
     static readonly CHAR_HEIGHT: number = 6;
 
     //
-    static readonly LOG_TASKS: boolean = this.IS_DEV && true;
+    static readonly LOG_TASKS: boolean = this.IS_DEV && false;
 }

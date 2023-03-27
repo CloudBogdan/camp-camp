@@ -76,6 +76,7 @@ export class Sprite extends Object {
     scaleX: number = 1;
     scaleY: number = 1;
     offset: IPoint = { x: 0, y: 0 };
+    origin: IPoint = { x: 4, y: 8 };
     flipX: boolean = false;
     flipY: boolean = false;
     alpha: number = 1;
@@ -89,6 +90,9 @@ export class Sprite extends Object {
         this.height = height;
         this.frame.width = this.width;
         this.frame.height = this.height;
+
+        this.origin.x = this.width/2;
+        this.origin.y = this.height;
     }
 
     update() {
@@ -108,7 +112,7 @@ export class Sprite extends Object {
         if (this.alpha != 1)
             Renderer.context.globalAlpha = this.alpha;
         
-        Renderer.translate(this.width/2, this.height,)
+        Renderer.translate(this.origin.x, this.origin.y);
         Renderer.translate(
             this.x - this.offset.x,
             this.y - this.offset.y
@@ -118,7 +122,7 @@ export class Sprite extends Object {
 
         Renderer.sprite(
             this.image,
-            -this.width/2, -this.height,
+            -this.origin.x, -this.origin.y,
             this.frame.x + this.animation.frames[this.animation.frameIndex] * this.frame.width, this.frame.y,
             this.frame.width, this.frame.height
         );

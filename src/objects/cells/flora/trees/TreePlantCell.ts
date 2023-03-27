@@ -2,10 +2,12 @@ import { Random } from "../../../../engine";
 import Animations from "../../../../utils/Animations";
 import Cells from "../../../../managers/Cells";
 import Inventory from "../../../../managers/Inventory";
-import Particles from "../../../../managers/Particles";
+import Particles from "../../../../managers/particles/Particles";
 import LeafParticle from "../../../particles/LeafParticle";
 import PlantCell from "../PlantCell";
 import { OrderType } from "../../../../managers/orders/Order";
+import { Assets } from "../../../../engine/core/Assets";
+import Sounds from "../../../../managers/Sounds";
 
 export default class TreePlantCell extends PlantCell {
     constructor(name: string) {
@@ -21,7 +23,7 @@ export default class TreePlantCell extends PlantCell {
             Animations.scaleDown(this, ()=> Cells.destroyCell(this));
             return;
         }
-            
+        
         Animations.treeFall(this, ()=> Cells.destroyCell(this));
         Inventory.store(this.getBreakCost());
     }
@@ -39,8 +41,9 @@ export default class TreePlantCell extends PlantCell {
     onOrderProcess(order: Order): void {
         super.onOrderProcess(order);
 
-        if (order.equals([OrderType.CHOP]))
+        if (order.equals([OrderType.CHOP])) {
             this.animateScale(1.3, .8);
+        }
     }
     
     //

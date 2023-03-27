@@ -1,9 +1,9 @@
 import { Random } from "../../engine";
-import { Particle } from "../../managers/Particles";
+import { Particle } from "../../managers/particles/Particle";
 
 export default class LeafParticle extends Particle {
     constructor() {
-        super("leaf-particle");
+        super("leaf-particle", 0);
 
         this.acceleration.x = Random.float(-.04, .04);
         this.acceleration.y = Random.float(.01, .03);

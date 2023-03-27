@@ -1,8 +1,9 @@
-import { Particle } from "../../managers/Particles";
+import { Particle } from "../../managers/particles/Particle";
+
 
 export default class OrderParticle extends Particle {
     constructor() {
-        super("order-particle");
+        super("order-particle", 0);
 
         this.width = 16;
         this.height = 16;

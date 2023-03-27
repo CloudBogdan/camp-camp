@@ -2,6 +2,9 @@ import Cell from "./Cell";
 import Inventory, { ICost } from "../../managers/Inventory";
 import Config from "../../utils/Config";
 import { OrderType } from "../../managers/orders/Order";
+import Particles from "../../managers/particles/Particles";
+import CloudParticle from "../particles/CloudParticle";
+import LargeCloudParticle from "../particles/LargeCloudParticle";
 
 export default class ImprovableCell extends Cell {
     level: number = 0;
@@ -20,6 +23,12 @@ export default class ImprovableCell extends Cell {
         
         if (success)
             this.level ++;
+        Particles.addParticles(
+            ()=> new LargeCloudParticle(),
+            ()=> this.getCenter().x + 1,
+            ()=> this.getCenter().y + 1,
+            4
+        );
         
         return true;
     }

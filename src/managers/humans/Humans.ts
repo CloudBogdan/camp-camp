@@ -1,10 +1,18 @@
-import { Engine, Group, Keyboard, Renderer } from "../../engine";
+import anime from "animejs";
+import { Engine, Group, Keyboard, Renderer, Sprite } from "../../engine";
+import CloudParticle from "../../objects/particles/CloudParticle";
+import FireworkParticle from "../../objects/particles/FireworkParticle";
+import OrderParticle from "../../objects/particles/OrderParticle";
+import Animations from "../../utils/Animations";
 import Config from "../../utils/Config";
 import Palette from "../../utils/Palette";
+import { IPoint } from "../../utils/types";
 
 import Cells from "../Cells";
 import Orders from "../orders/Orders";
+import Particles from "../particles/Particles";
 import PlayerHelpers from "../PlayerHelpers";
+import Screen from "../Screen";
 
 export default class Humans {
     static started = false;
@@ -15,8 +23,12 @@ export default class Humans {
     static staminaLevel: number = 1;
     static restLevel: number = 1;
     
-    static spawnHuman(human: Human, xCallback: ()=> number, yCallback: ()=> number): Human | null {
-        const pos = Cells.getEmptyPos(()=> xCallback(), ()=> yCallback());
+    static spawnHuman(human: Human, xCallback: ()=> number, yCallback: ()=> number, ignoreCells: boolean=false): Human | null {
+        let pos: IPoint | null = { x: xCallback(), y: yCallback() };
+        
+        if (!ignoreCells) 
+            pos = Cells.getEmptyPos(()=> xCallback(), ()=> yCallback());
+
         if (!pos) return null;
 
         human.x = pos.x;
@@ -27,6 +39,27 @@ export default class Humans {
     }
     static destroyHuman(human: Human): boolean {
         return this.humansGroup.destroy(human);
+    }
+    static settleHuman(human: Human, xCallback: ()=> number, yCallback: ()=> number) {
+        const pos = {
+            x: xCallback(),
+            y: yCallback()
+        };
+
+        const largeHumanSprite = new Sprite("large-human", 16, 16);
+        largeHumanSprite.x = pos.x - 8 + Screen.x;
+        largeHumanSprite.y = pos.y - 8 + Screen.y;
+        largeHumanSprite.origin = { x: 8, y: 8 };
+        
+        Engine.spritesGroup.add(largeHumanSprite);
+
+        Animations.blessedSpawn(largeHumanSprite, ()=> {
+            Engine.spritesGroup.destroy(largeHumanSprite);
+            Particles.addParticles(()=> new CloudParticle(), ()=> pos.x, ()=> pos.y, 4);
+            
+            human.emotion.set("happy");
+            this.spawnHuman(human, ()=> pos.x, ()=> pos.y, true);
+        });
     }
     
     //
@@ -70,7 +103,7 @@ export default class Humans {
         this.humansGroup.update();
 
         if (Config.IS_DEV) {
-            if (Keyboard.justKey("V"))
+            if (Keyboard.justKey("H"))
                 console.log(this.humans);
             if (Keyboard.justKey("T"))
                 console.log(this.humans.map(h=> h.tasks));

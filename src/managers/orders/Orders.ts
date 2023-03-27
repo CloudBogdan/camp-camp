@@ -2,6 +2,7 @@ import { Trigger } from "../../engine";
 
 import Pathfinding from "../../utils/Pathfinding";
 import Utils from "../../utils/Utils";
+import Sounds from "../Sounds";
 
 export enum OrderChangeType {
     ADDED,

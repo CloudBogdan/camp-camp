@@ -49,4 +49,27 @@ export default class Animations {
             }
         }))
     }
+    static blessedSpawn(sprite: Sprite, complete: ()=> void=()=> {}) {
+        anime({
+            targets: sprite,
+            scaleX: [0, 1],
+            scaleY: [0, 1],
+            duration: 500,
+            easing: "easeOutBack",
+            complete: ()=> {
+                anime({
+                    targets: sprite,
+                    scaleX: 0,
+                    scaleY: 0,
+                    angle: 420,
+                    duration: 1500,
+                    delay: 300,
+                    easing: "easeInCirc",
+                    complete: ()=> {
+                        complete();
+                    }
+                })
+            }
+        })
+    }
 }

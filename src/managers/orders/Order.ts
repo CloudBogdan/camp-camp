@@ -1,6 +1,6 @@
 import OrderTask from "../../objects/entities/human/tasks/OrderTask";
 import OrderParticle from "../../objects/particles/OrderParticle";
-import Particles from "../Particles";
+import Particles from "../particles/Particles";
 
 export enum OrderType {
     BUILD = "build",

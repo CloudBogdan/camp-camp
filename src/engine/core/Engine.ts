@@ -1,6 +1,8 @@
 import Config from "../../utils/Config";
 import Palette from "../../utils/Palette";
 import Utils from "../../utils/Utils";
+import { Group } from "../components/Group";
+import { Sprite } from "../components/Sprite";
 import { Stage } from "../components/Stage";
 import Timer from "../components/Timer";
 import { Assets } from "./Assets";
@@ -27,15 +29,13 @@ export class Engine {
         delta: 0
     };
     
+    static spritesGroup = new Group<Sprite>();
     static timers: Timer[] = [];
     
     static fadeOutStageTimer = this.createTimer(20);
     static fadeInStageTimer = this.createTimer(20);
     
     static prestart: ()=> void = ()=> {};
-    static start: ()=> void = ()=> {};
-    static update: ()=> void = ()=> {};
-    static draw: ()=> void = ()=> {};
 
     //
     private static _prestart() {
@@ -46,8 +46,6 @@ export class Engine {
 
         this.fadeInStageTimer.reversed = true;
         
-        this.start();
-        
         if (this.currentStage && !this.currentStage.started)
             this.currentStage.start();
     }
@@ -55,8 +53,6 @@ export class Engine {
         for (const timer of this.timers) {
             timer.update();
         }
-
-        this.update();
         
         if (this.nextStageClass && this.fadeOutStageTimer.justFinished) {
             this.fadeInStageTimer.start();
@@ -65,15 +61,15 @@ export class Engine {
 
         if (this.currentStage)
             this.currentStage.update();
+        this.spritesGroup.update();
     }
     private static _draw() {
-        this.draw();
-
         Renderer.background(Palette.BLACK);
         
         if (this.currentStage)
             this.currentStage.draw();
-
+        this.spritesGroup.draw();
+        
         const rectSize = Math.floor(this.stageTransitionProgress * 16);
 
         if (rectSize >= 1) {
@@ -99,9 +95,7 @@ export class Engine {
 
         this._prestart()
 
-        Assets.onLoaded.listen(()=> {
-            this._start();
-        })
+        this._start();
 
         let lastTime = Date.now();
         const loop = ()=> {
@@ -196,5 +190,8 @@ export class Engine {
     }
     static get stageTransitionProgress(): number {
         return this.fadeOutStageTimer.progress + this.fadeInStageTimer.progress;
+    }
+    static get isTransBetweenStages(): boolean {
+        return this.fadeOutStageTimer.active || this.fadeInStageTimer.active;
     }
 }

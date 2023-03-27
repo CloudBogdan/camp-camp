@@ -1,4 +1,4 @@
-import { Random, Renderer } from "../engine";
+import { Engine, Random, Renderer } from "../engine";
 import Config from "../utils/Config";
 import Palette from "../utils/Palette";
 
@@ -8,11 +8,12 @@ import Humans from "./humans/Humans";
 import CampfireCell from "../objects/cells/buildings/CampfireCell";
 import Orders from "./orders/Orders";
 import Generator from "./Generator";
-import Particles from "./Particles";
+import Particles from "./particles/Particles";
 import Flora from "./Flora";
 import PlayerHelpers from "./PlayerHelpers";
 import Objects from "./Objects";
 import Screen from "./Screen";
+import WorldEvents from "./world-events/WorldEvents";
 
 export default class World {
     // 
@@ -31,6 +32,7 @@ export default class World {
         Flora.start();
 
         PlayerHelpers.start();
+        WorldEvents.start();
 
         for (let i = 0; i < 3; i ++) {
             for (let j = 0; j < 3; j ++) {
@@ -56,8 +58,15 @@ export default class World {
         Humans.update();
         Particles.update();
         Flora.update();
+        WorldEvents.update();
 
         Objects.cursor.update();
+
+        if (Engine.time % Config.DAY_DURATION == 0)
+            this.day();
+    }
+    static day() {
+        WorldEvents.day();
     }
     
     static draw() {

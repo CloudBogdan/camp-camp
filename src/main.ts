@@ -3,6 +3,7 @@ import { Assets } from "./engine/core/Assets";
 import TitleScreenStage from "./stages/TitleScreenStage";
 import Translate from "./managers/Translate";
 
+// Import images
 import cursor_png from "./assets/images/gui/cursor.png";
 import humanIcon_png from "./assets/images/gui/human-icon.png";
 import foodIcon_png from "./assets/images/gui/food-icon.png";
@@ -44,15 +45,22 @@ import stone_png from "./assets/images/cells/stone.png";
 import sapling_png from "./assets/images/cells/sapling.png";
 import wheat_png from "./assets/images/cells/wheat.png";
 
+import largeHuman_png from "./assets/images/entities/large-human.png";
+
 import leafParticle_png from "./assets/images/particles/leaf-particle.png";
 import fireParticle_png from "./assets/images/particles/fire-particle.png";
 import orderParticle_png from "./assets/images/particles/order-particle.png";
 import stoneParticle_png from "./assets/images/particles/stone-particle.png";
+import fireworkParticle_png from "./assets/images/particles/firework-particle.png";
+import cloudParticle_png from "./assets/images/particles/cloud-particle.png";
 
 import logo_png from "./assets/images/gui/logo.png";
+import bogdanov_png from "./assets/images/gui/bogdanov.png";
+
 import GameStage from "./GameStage";
 
 Engine.prestart = ()=> {
+    // Load images
     Assets.loadImage("cursor", cursor_png);
     Assets.loadImage("human-icon", humanIcon_png);
     Assets.loadImage("food-icon", foodIcon_png);
@@ -95,15 +103,22 @@ Engine.prestart = ()=> {
     Assets.loadImage("sapling", sapling_png);
     Assets.loadImage("wheat", wheat_png);
 
+    Assets.loadImage("large-human", largeHuman_png);
+
     Assets.loadImage("leaf-particle", leafParticle_png);
     Assets.loadImage("fire-particle", fireParticle_png);
     Assets.loadImage("order-particle", orderParticle_png);
     Assets.loadImage("stone-particle", stoneParticle_png);
+    Assets.loadImage("firework-particle", fireworkParticle_png);
+    Assets.loadImage("cloud-particle", cloudParticle_png);
 
     Assets.loadImage("logo", logo_png);
+    Assets.loadImage("bogdanov", bogdanov_png);
 
+    //
     Translate.init();
 };
 
-Engine.gotoStage(TitleScreenStage)
+Engine.gotoStage(GameStage)
+// Engine.gotoStage(TitleScreenStage)
 Engine.init();

@@ -4,7 +4,7 @@ interface IAssetsList {
     images: {
         [key: string]: HTMLImageElement
     }
-    audio: {
+    sounds: {
         [key: string]: HTMLAudioElement
     }
 }
@@ -17,7 +17,7 @@ export class Assets {
     
     static assets: IAssetsList = {
         images: {},
-        audio: {}
+        sounds: {}
     }
     
     static init() {
@@ -30,15 +30,21 @@ export class Assets {
         
         const image = new Image();
         image.src = src;
+        this.assets.images[name] = image;
         
         image.onload = ()=> {
-            this.assets.images[name] = image;
             this.loadedAssets ++;
-
-            // On assets loaded
-            if (this.loadedAssets == this.totalAssets) {
-                this.onLoaded.notify(true);
-            }
+        }
+    }
+    static loadSound(name: string, src: string) {
+        this.totalAssets ++;
+        
+        const sound = new Audio();
+        sound.src = src;
+        this.assets.sounds[name] = sound;
+        
+        sound.onload = ()=> {
+            this.loadedAssets ++;
         }
     }
 
@@ -46,9 +52,12 @@ export class Assets {
     static getImage(name: string): HTMLImageElement | null {
         return this.assets.images[name] || null;
     }
+    static getSound(name: string): HTMLAudioElement | null {
+        return this.assets.sounds[name] || null;
+    }
 
     // Get
     static get loaded(): boolean {
-        return this.totalAssets == this.loadedAssets; 
+        return this.totalAssets <= this.loadedAssets; 
     }
 }

@@ -1,6 +1,6 @@
 import DwellingCell from "../DwellingCell";
 import NoneProfession from "../../../entities/human/professions/NoneProfession";
-import { OrderType } from "../../../../managers/orders/Order";
+import Order, { OrderType } from "../../../../managers/orders/Order";
 import { HumanTaskType } from "../../../entities/human/tasks/SampleHumanTask";
 
 export default class ProfessionCell extends DwellingCell {
@@ -41,14 +41,17 @@ export default class ProfessionCell extends DwellingCell {
         }
     }
 
-    onTakeOrder(order: Order): void {
+    onOrderAdded(order: Order): void {
         if (order.equals([OrderType.BREAK, OrderType.UPGRADE])) {
+            this.owner = null;
+            this.worker = null;
+            
             for (const human of this.humans) {
                 human.tasks.cancelTasksByType(HumanTaskType.LEARN_PROFESSION);
             }
         }
         
-        super.onTakeOrder(order);
+        super.onOrderAdded(order);
     }
     
     //
