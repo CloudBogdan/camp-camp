@@ -58,6 +58,7 @@ import logo_png from "./assets/images/gui/logo.png";
 import bogdanov_png from "./assets/images/gui/bogdanov.png";
 
 import GameStage from "./GameStage";
+import Config from "./utils/Config";
 
 Engine.prestart = ()=> {
     // Load images
@@ -119,6 +120,9 @@ Engine.prestart = ()=> {
     Translate.init();
 };
 
-Engine.gotoStage(GameStage)
-// Engine.gotoStage(TitleScreenStage)
+if (Config.IS_DEV)
+    Engine.gotoStage(GameStage)
+else
+    Engine.gotoStage(TitleScreenStage)
+    
 Engine.init();
